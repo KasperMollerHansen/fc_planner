@@ -6,10 +6,10 @@ docker run -it \
     -e DISPLAY=$DISPLAY \
     -e QT_X11_NO_MITHSHM=1 \
     --rm \
-    --name fc \
+    --name docker_ws \
     --network host \
     --privileged \
-    fc_planner \
+    docker_ws \
     bash
 
 echo "Done."

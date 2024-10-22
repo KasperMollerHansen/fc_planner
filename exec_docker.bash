@@ -1,1 +1,1 @@
-docker exec -it fc bash
+docker exec -it docker_ws bash
