@@ -11,7 +11,6 @@ __pycache__/
 build/
 devel/
 logs/
-.catkin_tools/
 develop-eggs/
 dist/
 downloads/
