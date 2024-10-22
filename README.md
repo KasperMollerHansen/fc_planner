@@ -17,7 +17,7 @@ docker pull osrf/ros:noetic-desktop-full
 docker build -t docker_ws.
 
 # Alias for docker build
-alias build_ws="cd fc_planner && docker build -t docker_ws --no-cache ."
+alias build_ws="cd fc_planner && docker build -t docker_ws ."
 
 # Working with the docker
  . run_docker.bash
