@@ -18,15 +18,16 @@ RUN apt-get install -y \
     libusb-dev \
     ros-noetic-openni-launch \
     ros-noetic-openni2-launch \
-    nano
+    nano \
+    ccache
 
 RUN rosdep update 
 
-# Clone the package from Git
-# RUN git clone https://github.com/HKUST-Aerial-Robotics/FC-Planner.git
-
+# Cache everything before this line
 ARG CACHEBUST=1
+RUN ccache -C
 
+# Clone GitHub repo
 RUN git clone https://github.com/KasperMollerHansen/fc_planner.git
 
 # Automatically source the ROS setup script and gpufreq
@@ -36,12 +37,8 @@ RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc \
 # Build the FC-Planner package
 WORKDIR "fc_planner/FC-Planner"
 
-RUN git update-index --assume-unchanged .catkin_tools/*
-
 RUN catkin clean
-RUN catkin config -DCMAKE_BUILD_TYPE=Release
+# RUN catkin config -DCMAKE_BUILD_TYPE=Release
+RUN catkin config --cmake-args -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Release
 RUN . /opt/ros/noetic/setup.sh && \
-    catkin build --cmake-args -Wno-dev
-
-# Default command
-# CMD ["bash"]
+    catkin build -j4 --cmake-args -Wno-dev
