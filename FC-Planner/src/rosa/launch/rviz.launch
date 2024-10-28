@@ -1,3 +1,22 @@
+<!--
+
+This launch file is used to start RViz for visualizing ROS data and to set up a static transform between the 'world' and 'navigation' frames.
+
+Nodes:
+1. rvizvisualisation:
+  - Package: rviz
+  - Type: rviz
+  - Output: log
+  - Arguments: -d $(find rosa)/config/traj.rviz
+  - Description: Launches RViz with a specified configuration file for trajectory visualization.
+
+2. tf_53:
+  - Package: tf
+  - Type: static_transform_publisher
+  - Name: tf_53
+  - Arguments: 0 0 0 0 0 0 world navigation 100
+  - Description: Publishes a static transform between the 'world' frame and the 'navigation' frame with a rate of 100 Hz.
+-->
 <launch>
   <node name="rvizvisualisation" pkg="rviz" type="rviz" output="log" args="-d $(find rosa)/config/traj.rviz" />
   <node pkg="tf" type="static_transform_publisher" name="tf_53" args="0 0 0 0 0 0 world navigation 100" />
