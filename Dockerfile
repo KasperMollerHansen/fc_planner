@@ -28,7 +28,8 @@ ARG CACHEBUST=1
 RUN ccache -C
 
 # Clone GitHub repo
-RUN git clone https://github.com/KasperMollerHansen/fc_planner.git
+RUN git clone https://github.com/KasperMollerHansen/fc_planner.git && \
+    cd fc_planner && git pull
 
 # Automatically source the ROS setup script and gpufreq
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc \
