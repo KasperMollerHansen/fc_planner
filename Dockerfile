@@ -23,12 +23,9 @@ RUN apt-get install -y \
 
 RUN rosdep update 
 
-# Cache everything before this line
-ARG CACHEBUST=1
-RUN ccache -C
-
 # Clone GitHub repo
-RUN git clone https://github.com/KasperMollerHansen/fc_planner.git && \
+ARG CACHE_BUST=$(date +%s)
+RUN echo $CACHE_BUST && git clone https://github.com/KasperMollerHansen/fc_planner.git && \
     cd fc_planner && git pull
 
 # Automatically source the ROS setup script and gpufreq
