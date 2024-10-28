@@ -1,3 +1,40 @@
+<!--
+
+This launch file is used to configure and start the hierarchical coverage planner for the Marina Bay Sands (MBS) scene. 
+It sets various parameters for the planner, including field of view, camera calibration, maximum distances, velocities, 
+and other settings required for the planner to function correctly.
+
+Parameters:
+- fov_h: Horizontal field of view.
+- fov_w: Vertical field of view.
+- cx, cy: Camera intrinsic parameters.
+- fx, fy: Focal lengths of the camera.
+- max_dist: Maximum distance for perception.
+- resolution_: Resolution for mapping and path planning.
+- max_vel: Maximum velocity of the drone.
+- max_acc: Maximum acceleration of the drone.
+- max_jerk: Maximum jerk of the drone.
+- max_yd: Maximum yaw rate.
+- max_ydd: Maximum yaw acceleration.
+- drone_radius: Radius of the drone.
+
+Nodes:
+- hcplanner_exec: Main node for the hierarchical coverage planner.
+
+Parameters for hcplanner_exec:
+- rosa_main: Parameters for skeleton-based space decomposition.
+- hcmap: Parameters for mapping.
+- perception_utils: Parameters for perception.
+- astar: Parameters for path searching.
+- hcplanner: Parameters for hierarchical coverage planning.
+- viewpoint_manager: Parameters for viewpoint management.
+- hcplanner: Parameters for path solver.
+- hctraj: Parameters for trajectory generation.
+- hcopp: Parameters for FC-Planner.
+
+Each section contains specific parameters that control various aspects of the planner's behavior, such as resolution, 
+intervals, angles, distances, and file paths for necessary data and configurations.
+-->
 <launch>
 <!-- SCENE : Marina Bay Sands -->
 <arg name="fov_h" value="55.0"/>

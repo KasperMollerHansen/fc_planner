@@ -1,3 +1,31 @@
+<!--
+
+This launch file is used to start the `rosa_exec` node from the `rosa` package. 
+The node is configured with various parameters to control its behavior.
+
+Parameters:
+- `rosa_main/estimation_num` (int): Number of estimations to perform.
+- `rosa_main/pcd` (string): Path to the point cloud data file.
+- `rosa_main/radius` (double): Radius value used in computations.
+- `rosa_main/th_mah` (double): Mahalanobis threshold value.
+- `rosa_main/delta` (double): Delta value used in computations.
+- `rosa_main/num_drosa` (int): Number of D-ROSA iterations.
+- `rosa_main/num_dcrosa` (int): Number of DC-ROSA iterations.
+- `rosa_main/k_KNN` (int): Number of nearest neighbors for KNN.
+- `rosa_main/sample_r` (double): Sample radius.
+- `rosa_main/alpha` (double): Alpha value used in computations.
+- `rosa_main/pt_downsample_size` (double): Point downsample size.
+- `rosa_main/estimation_number` (int): Number of estimations.
+- `rosa_main/upper_bound_angle_inner_decomp` (double): Upper bound angle for inner decomposition.
+- `rosa_main/upper_bound_length_inner_decomp` (double): Upper bound length for inner decomposition.
+- `rosa_main/Prune` (bool): Flag to enable or disable pruning.
+- `rosa_main/lower_bound_length` (double): Lower bound length.
+- `rosa_main/lower_bound_prune_angle` (double): Lower bound prune angle.
+- `rosa_main/upper_bound_original_points_num` (int): Upper bound on the number of original points.
+- `rosa_main/Ground` (bool): Flag to indicate ground processing.
+
+The node's output is directed to the screen, and it is marked as required, meaning it must be running for the launch to be considered successful.
+-->
 <launch>
 
 <node pkg ="rosa" name ="rosa_exec" type ="rosa_exec" output = "screen" required ="true">

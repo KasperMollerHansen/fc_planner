@@ -1,3 +1,132 @@
+<!--
+
+This launch file is used to configure and start the hierarchical coverage planner for a pipe inspection scenario. 
+It sets various parameters for different components of the planner, including scene parameters, mapping, perception, 
+path searching, hierarchical coverage planning, viewpoint management, path solving, and trajectory generation.
+
+Parameters:
+- fov_h: Horizontal field of view of the camera.
+- fov_w: Vertical field of view of the camera.
+- cx, cy: Principal point coordinates of the camera.
+- fx, fy: Focal lengths of the camera.
+- max_dist: Maximum distance for perception.
+- resolution_: Resolution for mapping and path searching.
+- max_vel: Maximum velocity of the drone.
+- max_acc: Maximum acceleration of the drone.
+- max_jerk: Maximum jerk of the drone.
+- max_yd: Maximum yaw rate.
+- max_ydd: Maximum yaw acceleration.
+- drone_radius: Radius of the drone.
+
+Nodes:
+- hcplanner_exec: Main node for hierarchical coverage planner execution.
+
+Parameters for hcplanner_exec:
+- Skeleton-based Space Decomposition:
+  - rosa_main/estimation_num: Number of estimations.
+  - rosa_main/pcd: Point cloud data file path.
+  - rosa_main/radius: Radius for space decomposition.
+  - rosa_main/th_mah: Threshold for Mahalanobis distance.
+  - rosa_main/delta: Delta value for space decomposition.
+  - rosa_main/num_drosa: Number of D-ROSA.
+  - rosa_main/num_dcrosa: Number of DC-ROSA.
+  - rosa_main/k_KNN: Number of nearest neighbors for KNN.
+  - rosa_main/sample_r: Sample radius.
+  - rosa_main/alpha: Alpha value for space decomposition.
+  - rosa_main/pt_downsample_size: Point downsample size.
+  - rosa_main/estimation_number: Number of estimations.
+  - rosa_main/upper_bound_angle_inner_decomp: Upper bound angle for inner decomposition.
+  - rosa_main/upper_bound_length_inner_decomp: Upper bound length for inner decomposition.
+  - rosa_main/Prune: Enable or disable pruning.
+  - rosa_main/lower_bound_length: Lower bound length for pruning.
+  - rosa_main/lower_bound_prune_angle: Lower bound angle for pruning.
+  - rosa_main/upper_bound_original_points_num: Upper bound for original points number.
+  - rosa_main/Ground: Enable or disable ground consideration.
+
+- Mapping:
+  - hcmap/resolution: Resolution for mapping.
+  - hcmap/interval: Interval for mapping.
+  - hcmap/plane_thickness: Plane thickness for mapping.
+  - hcmap/dilateRadius: Dilate radius for mapping.
+  - hcmap/checkScale: Check scale for mapping.
+  - hcmap/checkSize: Check size for mapping.
+  - hcmap/inflateVoxel: Inflate voxel size for mapping.
+
+- Perception:
+  - perception_utils/top_angle: Top angle for perception.
+  - perception_utils/left_angle: Left angle for perception.
+  - perception_utils/right_angle: Right angle for perception.
+  - perception_utils/max_dist: Maximum distance for perception.
+  - perception_utils/vis_dist: Visibility distance for perception.
+
+- Path Searching:
+  - astar/lambda_heu_hc: Lambda heuristic for A* search.
+  - astar/resolution_astar: Resolution for A* search.
+  - astar/allocate_num: Allocate number for A* search.
+  - astar/max_search_time: Maximum search time for A* search.
+  - astar/searching_res: Searching resolution for A* search.
+
+- Hierarchical Coverage Planner:
+  - hcplanner/mesh: Mesh file path.
+  - hcplanner/fullcloud: Full cloud data file path.
+  - hcplanner/model_downsample_size: Model downsample size.
+  - hcplanner/safe_inner_dist_coeff: Safe inner distance coefficient.
+  - hcplanner/cx, cy: Principal point coordinates of the camera.
+  - hcplanner/fx, fy: Focal lengths of the camera.
+  - hcplanner/tripod_head: Enable or disable tripod head.
+  - hcplanner/sample_step4normal: Sample step for normal.
+  - hcplanner/current_x_, current_y_, current_z_: Current position coordinates.
+  - hcplanner/exec_mode: Execution mode (debug or release).
+
+- Viewpoint Manager:
+  - viewpoint_manager/visible_range: Visible range for viewpoint manager.
+  - viewpoint_manager/viewpoints_distance: Distance between viewpoints.
+  - viewpoint_manager/fov_h, fov_w: Field of view for viewpoint manager.
+  - viewpoint_manager/pitch_upper: Upper pitch limit.
+  - viewpoint_manager/pitch_lower: Lower pitch limit.
+  - viewpoint_manager/zGround: Enable or disable ground consideration.
+  - viewpoint_manager/GroundPos: Ground position.
+  - viewpoint_manager/safeHeight: Safe height.
+  - viewpoint_manager/safe_radius: Safe radius.
+  - viewpoint_manager/attitude_type: Attitude type (yaw or all).
+  - viewpoint_manager/max_iter_num: Maximum iteration number.
+  - viewpoint_manager/pose_update: Enable or disable pose update.
+
+- Path Solver:
+  - hcplanner/precision_: Precision for path solver.
+  - hcplanner/global_solver: Global solver file path.
+  - hcplanner/global_par_file: Global parameter file path.
+  - hcplanner/global_problem_file: Global problem file path.
+  - hcplanner/global_result_file: Global result file path.
+  - hcplanner/global_runs: Number of global runs.
+  - hcplanner/local_folder: Local folder path.
+  - hcplanner/local_runs: Number of local runs.
+  - hcplanner/vmax_: Maximum velocity.
+  - hcplanner/amax_: Maximum acceleration.
+  - hcplanner/jmax_: Maximum jerk.
+  - hcplanner/ydmax_: Maximum yaw rate.
+  - hcplanner/yddmax_: Maximum yaw acceleration.
+  - hcplanner/JointRadius: Joint radius.
+  - hcplanner/local2opt_trial: Local 2-opt trial number.
+
+- Trajectory Generation:
+  - hctraj/drone_radius: Drone radius.
+  - hctraj/vmax_: Maximum velocity.
+  - hctraj/amax_: Maximum acceleration.
+  - hctraj/jmax_: Maximum jerk.
+  - hctraj/ydmax_: Maximum yaw rate.
+  - hctraj/rho_T, rho_j, rho_a, rho_v, rho_p, rho_z, rho_e: Rho values for trajectory generation.
+  - hctraj/TrajFile: Trajectory file path.
+  - hctraj/CloudFile: Cloud file path.
+  - hctraj/PosFile: Position coefficient file path.
+  - hctraj/PitchFile: Pitch coefficient file path.
+  - hctraj/YawFile: Yaw coefficient file path.
+
+- FC-Planner:
+  - hcopp/TimeStamp: Timestamp for FC-Planner.
+  - hcopp/TrajSampleFrequency: Trajectory sample frequency.
+  - hcopp/droneMesh: Drone mesh file path.
+-->
 <launch>
 <!-- SCENE : Pipe -->
 <arg name="fov_h" value="55.0"/>

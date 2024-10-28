@@ -1,3 +1,133 @@
+<!--
+
+This launch file is configured for the "Christ the Redeemer" scene and sets up the hierarchical coverage planner node with various parameters for scene decomposition, mapping, perception, path searching, hierarchical coverage planning, viewpoint management, path solving, trajectory generation, and FC-Planner.
+
+Arguments:
+- fov_h: Horizontal field of view.
+- fov_w: Vertical field of view.
+- cx, cy: Camera intrinsic parameters.
+- fx, fy: Focal lengths.
+- max_dist: Maximum distance for perception.
+- resolution_: Resolution for mapping and path searching.
+- max_vel: Maximum velocity.
+- max_acc: Maximum acceleration.
+- max_jerk: Maximum jerk.
+- max_yd: Maximum yaw rate.
+- max_ydd: Maximum yaw acceleration.
+- drone_radius: Radius of the drone.
+
+Node: hcplanner_exec
+- Package: hierarchical_coverage_planner
+- Type: hcplanner_exec
+- Output: screen
+- Required: true
+
+Parameters:
+- Skeleton-based Space Decomposition:
+  - rosa_main/estimation_num: Number of estimations.
+  - rosa_main/pcd: Point cloud data file path.
+  - rosa_main/radius: Radius for space decomposition.
+  - rosa_main/th_mah: Mahalanobis threshold.
+  - rosa_main/delta: Delta value for decomposition.
+  - rosa_main/num_drosa: Number of D-ROSA.
+  - rosa_main/num_dcrosa: Number of DC-ROSA.
+  - rosa_main/k_KNN: K-nearest neighbors.
+  - rosa_main/sample_r: Sample radius.
+  - rosa_main/alpha: Alpha value.
+  - rosa_main/pt_downsample_size: Point downsample size.
+  - rosa_main/estimation_number: Number of estimations.
+  - rosa_main/upper_bound_angle_inner_decomp: Upper bound angle for inner decomposition.
+  - rosa_main/upper_bound_length_inner_decomp: Upper bound length for inner decomposition.
+  - rosa_main/Prune: Pruning flag.
+  - rosa_main/lower_bound_length: Lower bound length.
+  - rosa_main/lower_bound_prune_angle: Lower bound prune angle.
+  - rosa_main/upper_bound_original_points_num: Upper bound for original points number.
+  - rosa_main/Ground: Ground flag.
+
+- Mapping:
+  - hcmap/resolution: Resolution for mapping.
+  - hcmap/interval: Interval for mapping.
+  - hcmap/plane_thickness: Plane thickness.
+  - hcmap/dilateRadius: Dilate radius.
+  - hcmap/checkScale: Check scale.
+  - hcmap/checkSize: Check size.
+  - hcmap/inflateVoxel: Inflate voxel size.
+
+- Perception:
+  - perception_utils/top_angle: Top angle for perception.
+  - perception_utils/left_angle: Left angle for perception.
+  - perception_utils/right_angle: Right angle for perception.
+  - perception_utils/max_dist: Maximum distance for perception.
+  - perception_utils/vis_dist: Visibility distance.
+
+- Path Searching:
+  - astar/lambda_heu_hc: Lambda heuristic for A*.
+  - astar/resolution_astar: Resolution for A*.
+  - astar/allocate_num: Allocation number for A*.
+  - astar/max_search_time: Maximum search time for A*.
+  - astar/searching_res: Searching resolution for A*.
+
+- Hierarchical Coverage Planner:
+  - hcplanner/mesh: Mesh file path.
+  - hcplanner/fullcloud: Full cloud data file path.
+  - hcplanner/model_downsample_size: Model downsample size.
+  - hcplanner/safe_inner_dist_coeff: Safe inner distance coefficient.
+  - hcplanner/cx, cy: Camera intrinsic parameters.
+  - hcplanner/fx, fy: Focal lengths.
+  - hcplanner/tripod_head: Tripod head flag.
+  - hcplanner/sample_step4normal: Sample step for normal.
+  - hcplanner/current_x_, current_y_, current_z_: Current position coordinates.
+  - hcplanner/exec_mode: Execution mode (debug or release).
+
+- Viewpoint Manager:
+  - viewpoint_manager/visible_range: Visible range.
+  - viewpoint_manager/viewpoints_distance: Distance between viewpoints.
+  - viewpoint_manager/fov_h, fov_w: Field of view.
+  - viewpoint_manager/pitch_upper: Upper pitch limit.
+  - viewpoint_manager/pitch_lower: Lower pitch limit.
+  - viewpoint_manager/zGround: Ground flag.
+  - viewpoint_manager/GroundPos: Ground position.
+  - viewpoint_manager/safeHeight: Safe height.
+  - viewpoint_manager/safe_radius: Safe radius.
+  - viewpoint_manager/attitude_type: Attitude type (yaw or all).
+  - viewpoint_manager/max_iter_num: Maximum iteration number.
+  - viewpoint_manager/pose_update: Pose update flag.
+
+- Path Solver:
+  - hcplanner/precision_: Precision.
+  - hcplanner/global_solver: Global solver file path.
+  - hcplanner/global_par_file: Global parameter file path.
+  - hcplanner/global_problem_file: Global problem file path.
+  - hcplanner/global_result_file: Global result file path.
+  - hcplanner/global_runs: Number of global runs.
+  - hcplanner/local_folder: Local folder path.
+  - hcplanner/local_runs: Number of local runs.
+  - hcplanner/vmax_: Maximum velocity.
+  - hcplanner/amax_: Maximum acceleration.
+  - hcplanner/jmax_: Maximum jerk.
+  - hcplanner/ydmax_: Maximum yaw rate.
+  - hcplanner/yddmax_: Maximum yaw acceleration.
+  - hcplanner/JointRadius: Joint radius.
+  - hcplanner/local2opt_trial: Local 2-opt trial number.
+
+- Trajectory Generation:
+  - hctraj/drone_radius: Drone radius.
+  - hctraj/vmax_: Maximum velocity.
+  - hctraj/amax_: Maximum acceleration.
+  - hctraj/jmax_: Maximum jerk.
+  - hctraj/ydmax_: Maximum yaw rate.
+  - hctraj/rho_T, rho_j, rho_a, rho_v, rho_p, rho_z, rho_e: Rho values for trajectory generation.
+  - hctraj/TrajFile: Trajectory file path.
+  - hctraj/CloudFile: Cloud file path.
+  - hctraj/PosFile: Position coefficient file path.
+  - hctraj/PitchFile: Pitch coefficient file path.
+  - hctraj/YawFile: Yaw coefficient file path.
+
+- FC-Planner:
+  - hcopp/TimeStamp: Timestamp.
+  - hcopp/TrajSampleFrequency: Trajectory sample frequency.
+  - hcopp/droneMesh: Drone mesh file path.
+-->
 <launch>
 <!-- SCENE : Christ the Redeemer -->
 <arg name="fov_h" value="55.0"/>
