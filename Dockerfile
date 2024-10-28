@@ -43,3 +43,5 @@ RUN catkin clean
 RUN catkin config --cmake-args -DCMAKE_C_COMPILER_LAUNCHER=ccache -DCMAKE_CXX_COMPILER_LAUNCHER=ccache -DCMAKE_BUILD_TYPE=Release
 RUN . /opt/ros/noetic/setup.sh && \
     catkin build -j4 --cmake-args -Wno-dev
+
+RUN echo "source devel/setup.bash" >> ~/.bashrc 
