@@ -1,0 +1,265 @@
+<!--
+
+This launch file is used to configure and start the hierarchical coverage planner for a pipe inspection scenario. 
+It sets various parameters for different components of the planner, including scene parameters, mapping, perception, 
+path searching, hierarchical coverage planning, viewpoint management, path solving, and trajectory generation.
+
+Parameters:
+- fov_h: Horizontal field of view of the camera.
+- fov_w: Vertical field of view of the camera.
+- cx, cy: Principal point coordinates of the camera.
+- fx, fy: Focal lengths of the camera.
+- max_dist: Maximum distance for perception.
+- resolution_: Resolution for mapping and path searching.
+- max_vel: Maximum velocity of the drone.
+- max_acc: Maximum acceleration of the drone.
+- max_jerk: Maximum jerk of the drone.
+- max_yd: Maximum yaw rate.
+- max_ydd: Maximum yaw acceleration.
+- drone_radius: Radius of the drone.
+
+Nodes:
+- hcplanner_exec: Main node for hierarchical coverage planner execution.
+
+Parameters for hcplanner_exec:
+- Skeleton-based Space Decomposition:
+  - rosa_main/estimation_num: Number of estimations.
+  - rosa_main/pcd: Point cloud data file path.
+  - rosa_main/radius: Radius for space decomposition.
+  - rosa_main/th_mah: Threshold for Mahalanobis distance.
+  - rosa_main/delta: Delta value for space decomposition.
+  - rosa_main/num_drosa: Number of D-ROSA.
+  - rosa_main/num_dcrosa: Number of DC-ROSA.
+  - rosa_main/k_KNN: Number of nearest neighbors for KNN.
+  - rosa_main/sample_r: Sample radius.
+  - rosa_main/alpha: Alpha value for space decomposition.
+  - rosa_main/pt_downsample_size: Point downsample size.
+  - rosa_main/estimation_number: Number of estimations.
+  - rosa_main/upper_bound_angle_inner_decomp: Upper bound angle for inner decomposition.
+  - rosa_main/upper_bound_length_inner_decomp: Upper bound length for inner decomposition.
+  - rosa_main/Prune: Enable or disable pruning.
+  - rosa_main/lower_bound_length: Lower bound length for pruning.
+  - rosa_main/lower_bound_prune_angle: Lower bound angle for pruning.
+  - rosa_main/upper_bound_original_points_num: Upper bound for original points number.
+  - rosa_main/Ground: Enable or disable ground consideration.
+
+- Mapping:
+  - hcmap/resolution: Resolution for mapping.
+  - hcmap/interval: Interval for mapping.
+  - hcmap/plane_thickness: Plane thickness for mapping.
+  - hcmap/dilateRadius: Dilate radius for mapping.
+  - hcmap/checkScale: Check scale for mapping.
+  - hcmap/checkSize: Check size for mapping.
+  - hcmap/inflateVoxel: Inflate voxel size for mapping.
+
+- Perception:
+  - perception_utils/top_angle: Top angle for perception.
+  - perception_utils/left_angle: Left angle for perception.
+  - perception_utils/right_angle: Right angle for perception.
+  - perception_utils/max_dist: Maximum distance for perception.
+  - perception_utils/vis_dist: Visibility distance for perception.
+
+- Path Searching:
+  - astar/lambda_heu_hc: Lambda heuristic for A* search.
+  - astar/resolution_astar: Resolution for A* search.
+  - astar/allocate_num: Allocate number for A* search.
+  - astar/max_search_time: Maximum search time for A* search.
+  - astar/searching_res: Searching resolution for A* search.
+
+- Hierarchical Coverage Planner:
+  - hcplanner/mesh: Mesh file path.
+  - hcplanner/fullcloud: Full cloud data file path.
+  - hcplanner/model_downsample_size: Model downsample size.
+  - hcplanner/safe_inner_dist_coeff: Safe inner distance coefficient.
+  - hcplanner/cx, cy: Principal point coordinates of the camera.
+  - hcplanner/fx, fy: Focal lengths of the camera.
+  - hcplanner/tripod_head: Enable or disable tripod head.
+  - hcplanner/sample_step4normal: Sample step for normal.
+  - hcplanner/current_x_, current_y_, current_z_: Current position coordinates.
+  - hcplanner/exec_mode: Execution mode (debug or release).
+
+- Viewpoint Manager:
+  - viewpoint_manager/visible_range: Visible range for viewpoint manager.
+  - viewpoint_manager/viewpoints_distance: Distance between viewpoints.
+  - viewpoint_manager/fov_h, fov_w: Field of view for viewpoint manager.
+  - viewpoint_manager/pitch_upper: Upper pitch limit.
+  - viewpoint_manager/pitch_lower: Lower pitch limit.
+  - viewpoint_manager/zGround: Enable or disable ground consideration.
+  - viewpoint_manager/GroundPos: Ground position.
+  - viewpoint_manager/safeHeight: Safe height.
+  - viewpoint_manager/safe_radius: Safe radius.
+  - viewpoint_manager/attitude_type: Attitude type (yaw or all).
+  - viewpoint_manager/max_iter_num: Maximum iteration number.
+  - viewpoint_manager/pose_update: Enable or disable pose update.
+
+- Path Solver:
+  - hcplanner/precision_: Precision for path solver.
+  - hcplanner/global_solver: Global solver file path.
+  - hcplanner/global_par_file: Global parameter file path.
+  - hcplanner/global_problem_file: Global problem file path.
+  - hcplanner/global_result_file: Global result file path.
+  - hcplanner/global_runs: Number of global runs.
+  - hcplanner/local_folder: Local folder path.
+  - hcplanner/local_runs: Number of local runs.
+  - hcplanner/vmax_: Maximum velocity.
+  - hcplanner/amax_: Maximum acceleration.
+  - hcplanner/jmax_: Maximum jerk.
+  - hcplanner/ydmax_: Maximum yaw rate.
+  - hcplanner/yddmax_: Maximum yaw acceleration.
+  - hcplanner/JointRadius: Joint radius.
+  - hcplanner/local2opt_trial: Local 2-opt trial number.
+
+- Trajectory Generation:
+  - hctraj/drone_radius: Drone radius.
+  - hctraj/vmax_: Maximum velocity.
+  - hctraj/amax_: Maximum acceleration.
+  - hctraj/jmax_: Maximum jerk.
+  - hctraj/ydmax_: Maximum yaw rate.
+  - hctraj/rho_T, rho_j, rho_a, rho_v, rho_p, rho_z, rho_e: Rho values for trajectory generation.
+  - hctraj/TrajFile: Trajectory file path.
+  - hctraj/CloudFile: Cloud file path.
+  - hctraj/PosFile: Position coefficient file path.
+  - hctraj/PitchFile: Pitch coefficient file path.
+  - hctraj/YawFile: Yaw coefficient file path.
+
+- FC-Planner:
+  - hcopp/TimeStamp: Timestamp for FC-Planner.
+  - hcopp/TrajSampleFrequency: Trajectory sample frequency.
+  - hcopp/droneMesh: Drone mesh file path.
+-->
+<launch>
+<!-- SCENE : Pipe -->
+<arg name="fov_h" value="55.0"/>
+<arg name="fov_w" value="75.0"/>
+<arg name="cx" value="320.0"/>
+<arg name="cy" value="240.0"/>
+<arg name="fx" value="417.0467"/>
+<arg name="fy" value="461.0951"/>
+<arg name="max_dist" value="11.0"/>
+<arg name="resolution_" value="0.4"/>
+<arg name="max_vel" value="2.0"/>
+<arg name="max_acc" value="1.0"/>
+<arg name="max_jerk" value="0.5"/>
+<arg name="max_yd" value="60.0"/>
+<arg name="max_ydd" value="30.0"/>
+<arg name="drone_radius" value="0.3"/>
+
+<node pkg ="hierarchical_coverage_planner" name ="hcplanner_exec" type ="hcplanner_exec" output = "screen" required ="true">
+  <!-- ! Skeleton-based Space Decomposition ! -->
+  <param name="rosa_main/estimation_num" value="1000" type="int"/>
+  <param name="rosa_main/pcd" value="$(find hierarchical_coverage_planner)/data/pipe.pcd" type="string"/>
+  <param name="rosa_main/radius" value="0.1" type="double"/>
+  <param name="rosa_main/th_mah" value="0.01" type="double"/>
+  <param name="rosa_main/delta" value="0.01" type="double"/>
+  <param name="rosa_main/num_drosa" value="5" type="int"/>
+  <param name="rosa_main/num_dcrosa" value="2" type="int"/>
+  <param name="rosa_main/k_KNN" value="6" type="int"/>
+  <param name="rosa_main/sample_r" value="0.05" type="double"/>
+  <param name="rosa_main/alpha" value="0.3" type="double"/>
+  <param name="rosa_main/pt_downsample_size" value="0.02" type="double"/>
+  <param name="rosa_main/estimation_number" value="10" type="int"/>
+  <param name="rosa_main/upper_bound_angle_inner_decomp" value="45.0" type="double"/>
+  <param name="rosa_main/upper_bound_length_inner_decomp" value="1.0" type="double"/>
+  <param name="rosa_main/Prune" value="true" type="bool"/>
+  <param name="rosa_main/lower_bound_length" value="0.2" type="double"/>
+  <param name="rosa_main/lower_bound_prune_angle" value="75.0" type="double"/>
+  <param name="rosa_main/upper_bound_original_points_num" value="10000" type="int"/>
+  <param name="rosa_main/Ground" value="false" type="bool"/>
+
+  <!-- ! Mapping ! -->
+  <param name="hcmap/resolution" value="$(arg resolution_)" type="double"/>
+  <param name="hcmap/interval" value="1.0" type="double"/>
+  <param name="hcmap/plane_thickness" value="3.0" type="double"/>
+  <param name="hcmap/dilateRadius" value="0.5" type="double"/>
+  <param name="hcmap/checkScale" value="5.0" type="double"/>
+  <param name="hcmap/checkSize" value="5" type="int"/>
+  <param name="hcmap/inflateVoxel" value="3" type="int"/>
+
+  <!-- ! Perception ! -->
+  <param name="perception_utils/top_angle" value="$(eval arg('fov_h')*3.1415926/360.0)" type="double"/>
+  <param name="perception_utils/left_angle" value="$(eval arg('fov_w')*3.1415926/360.0)" type="double"/>
+  <param name="perception_utils/right_angle" value="$(eval arg('fov_w')*3.1415926/360.0)" type="double"/>
+  <param name="perception_utils/max_dist" value="$(arg max_dist)" type="double"/>
+  <param name="perception_utils/vis_dist" value="3.0" type="double"/>
+
+  <!-- ! Path Searching ! -->
+  <param name="astar/lambda_heu_hc" value="10.0" type="double"/>
+  <param name="astar/resolution_astar" value="$(arg resolution_)" type="double"/>
+  <param name="astar/allocate_num" value="1000000" type="int"/>
+  <param name="astar/max_search_time" value="0.005" type="double"/>
+  <param name="astar/searching_res" value="0.4" type="double"/>
+
+  <!-- ! Hierarchical Coverage Planner ! -->
+  <param name="hcplanner/mesh" value="$(find hierarchical_coverage_planner)/data/mesh/pipe.dae" type="string"/>
+  <param name="hcplanner/fullcloud" value="$(find hierarchical_coverage_planner)/data/pipe.pcd" type="string"/>
+  <param name="hcplanner/model_downsample_size" value="2.0" type="double"/>
+  <param name="hcplanner/safe_inner_dist_coeff" value="1.1" type="double"/>
+  <param name="hcplanner/cx" value="$(arg cx)" type="double"/>
+  <param name="hcplanner/cy" value="$(arg cy)" type="double"/>
+  <param name="hcplanner/fx" value="$(arg fx)" type="double"/>
+  <param name="hcplanner/fy" value="$(arg fy)" type="double"/>
+  <param name="hcplanner/tripod_head" value="false" type="bool"/>
+  <param name="hcplanner/sample_step4normal" value="1.0" type="double"/>
+  <param name="hcplanner/current_x_" value="0.0" type="double"/>
+  <param name="hcplanner/current_y_" value="0.0" type="double"/>
+  <param name="hcplanner/current_z_" value="0.0" type="double"/>
+  <param name="hcplanner/exec_mode" value="release" type="string"/> <!-- mode : debug or release -->
+
+  <!-- ! Viewpoint Manager ! -->
+  <param name="viewpoint_manager/visible_range" value="$(arg max_dist)" type="double"/>
+  <param name="viewpoint_manager/viewpoints_distance" value="8.0" type="double"/>
+  <param name="viewpoint_manager/fov_h" value="$(arg fov_h)" type="double"/>
+  <param name="viewpoint_manager/fov_w" value="$(arg fov_w)" type="double"/>
+  <param name="viewpoint_manager/pitch_upper" value="70.0" type="double"/>
+  <param name="viewpoint_manager/pitch_lower" value="-85.0" type="double"/>
+  <param name="viewpoint_manager/zGround" value="false" type="bool"/>
+  <param name="viewpoint_manager/GroundPos" value="-7.4" type="double"/>
+  <param name="viewpoint_manager/safeHeight" value="1.5" type="double"/>
+  <param name="viewpoint_manager/safe_radius" value="3.0" type="double"/>
+  <param name="viewpoint_manager/attitude_type" value="all" type="string"/> <!-- attitude_type : 1) yaw 2) all -> (pitch, yaw) -->
+  <param name="viewpoint_manager/max_iter_num" value="5" type="int"/> 
+  <param name="viewpoint_manager/pose_update" value="true" type="bool"/> 
+
+  <!-- ! Path Solver ! -->
+  <param name="hcplanner/precision_" value="100" type="int"/>
+  <param name="hcplanner/global_solver" value="$(find hierarchical_coverage_planner)/solution/LKH" type="string"/>
+  <param name="hcplanner/global_par_file" value="$(find hierarchical_coverage_planner)/solution/global/global.par" type="string"/>
+  <param name="hcplanner/global_problem_file" value="$(find hierarchical_coverage_planner)/solution/global/global.tsp" type="string"/>
+  <param name="hcplanner/global_result_file" value="$(find hierarchical_coverage_planner)/solution/global/global.txt" type="string"/>
+  <param name="hcplanner/global_runs" value="1" type="int"/>
+  <param name="hcplanner/local_folder" value="$(find hierarchical_coverage_planner)/solution/local" type="string"/>
+  <param name="hcplanner/local_runs" value="1" type="int"/>
+  <param name="hcplanner/vmax_" value="$(arg max_vel)" type="double"/>
+  <param name="hcplanner/amax_" value="$(arg max_acc)" type="double"/>
+  <param name="hcplanner/jmax_" value="$(arg max_jerk)" type="double"/>
+  <param name="hcplanner/ydmax_" value="$(eval arg('max_yd')*3.1415926/180.0)" type="double"/>
+  <param name="hcplanner/yddmax_" value="$(eval arg('max_ydd')*3.1415926/180.0)" type="double"/>
+  <param name="hcplanner/JointRadius" value="2.0" type="double"/>
+  <param name="hcplanner/local2opt_trial" value="3000" type="int"/>
+
+  <!-- ! Trajectory Generation ! -->
+  <param name="hctraj/drone_radius" value="$(arg drone_radius)" type="double"/>
+  <param name="hctraj/vmax_" value="$(arg max_vel)" type="double"/>
+  <param name="hctraj/amax_" value="$(arg max_acc)" type="double"/>
+  <param name="hctraj/jmax_" value="$(arg max_jerk)" type="double"/>
+  <param name="hctraj/ydmax_" value="$(eval arg('max_yd')*3.1415926/180.0)" type="double"/>
+  <param name="hctraj/rho_T" value="500.0" type="double"/>
+  <param name="hctraj/rho_j" value="800.0" type="double"/>
+  <param name="hctraj/rho_a" value="800.0" type="double"/>
+  <param name="hctraj/rho_v" value="800.0" type="double"/>
+  <param name="hctraj/rho_p" value="800.0" type="double"/>
+  <param name="hctraj/rho_z" value="2000.0" type="double"/>
+  <param name="hctraj/rho_e" value="500.0" type="double"/>
+  <param name="hctraj/TrajFile" value="$(find hierarchical_coverage_planner)/solution/Traj/TrajInfoPipe.txt" type="string"/>
+  <param name="hctraj/CloudFile" value="$(find hierarchical_coverage_planner)/solution/Traj/CloudInfoPipe.txt" type="string"/>
+  <param name="hctraj/PosFile" value="$(find hierarchical_coverage_planner)/solution/Traj/PositionCoeffPipe.txt" type="string"/>
+  <param name="hctraj/PitchFile" value="$(find hierarchical_coverage_planner)/solution/Traj/PitchCoeffPipe.txt" type="string"/>
+  <param name="hctraj/YawFile" value="$(find hierarchical_coverage_planner)/solution/Traj/YawCoeffPipe.txt" type="string"/>
+
+  <!-- ! FC-Planner ! -->
+  <param name="hcopp/TimeStamp" value="0.3" type="double"/>
+  <param name="hcopp/TrajSampleFrequency" value="0.1" type="double"/>
+  <param name="hcopp/droneMesh" value="$(find traj_utils)/f250.dae" type="string"/>
+</node>
+
+</launch>
