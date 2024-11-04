@@ -16,8 +16,12 @@ docker pull osrf/ros:noetic-desktop-full
 #cd into the cloned ws
 docker build -t docker_ws.
 
-# Alias for docker build
-alias build_ws="cd fc_planner && docker build --build-arg CACHE_BUST=$(date +%s) -t docker_ws ."
+# Function for building docker ws - Place in ~/.bashrc
+build_ws() {
+    local branch="${1:-main}"
+    echo "Cloning Branch: $branch"
+    docker build -t docker_ws --build-arg CACHE_BUST=$(date +%s) --build-arg branch="$branch" --progress=plain .
+}
 
 # Working with the docker
  . run_docker.bash
