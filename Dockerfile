@@ -24,11 +24,15 @@ RUN apt-get install -y \
 RUN rosdep update 
 
 # Clone GitHub repo
-ARG CACHE_BUST=$(date +%s)
-RUN echo $CACHE_BUST && git clone https://github.com/KasperMollerHansen/fc_planner.git && \
-    cd fc_planner && git pull
+ARG CACHE_BUST
+ARG branch
 
-# Automatically source the ROS setup script and gpufreq
+RUN echo "Branch: $branch"
+
+# Clone only selected branch
+RUN echo $CACHE_BUST && git clone -b $branch https://github.com/KasperMollerHansen/fc_planner.git --single-branch 
+
+# Automatically source the ROS setup script and gpufreq 
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc \
     echo "sudo cpufreq-set -g performance" >> ~/.bashrc
 
