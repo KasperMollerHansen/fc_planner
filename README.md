@@ -25,3 +25,17 @@ alias build_ws="cd fc_planner && docker build --build-arg CACHE_BUST=$(date +%s)
     
  . exec_docker.bash
     do ros things
+
+# Credit to:
+* [FC-Planner: A Skeleton-guided Planning Framework for Fast Aerial Coverage of Complex 3D Scenes](https://ieeexplore.ieee.org/document/10610621), Chen Feng, Haojia Li, Mingjie Zhang, Xinyi Chen, Boyu Zhou, and Shaojie Shen, 2024 IEEE International Conference on Robotics and Automation (ICRA).
+
+```
+@inproceedings{feng2024fc,
+  title={Fc-planner: A skeleton-guided planning framework for fast aerial coverage of complex 3d scenes},
+  author={Feng, Chen and Li, Haojia and Zhang, Mingjie and Chen, Xinyi and Zhou, Boyu and Shen, Shaojie},
+  booktitle={2024 IEEE International Conference on Robotics and Automation (ICRA)},
+  pages={8686--8692},
+  year={2024},
+  organization={IEEE}
+}
+```
