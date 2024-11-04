@@ -32,7 +32,7 @@ The node's output is directed to the screen, and it is marked as required to ens
   <param name="rosa_main/estimation_num" value="1000" type="int"/>
   
   <!-- /* PIPE */ -->
-  <param name="rosa_main/pcd" value="$(find wind-turbine)/data/pipe.pcd" type="string"/>
+  <param name="rosa_main/pcd" value="$(find wind-turbine)/data/windmill.pcd" type="string"/>
   <param name="rosa_main/radius" value="0.1" type="double"/>
   <param name="rosa_main/th_mah" value="0.01" type="double"/>
   <param name="rosa_main/delta" value="0.01" type="double"/>
