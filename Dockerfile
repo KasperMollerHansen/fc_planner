@@ -12,7 +12,6 @@ RUN apt-get update && \
         python3.10-distutils \
         libgl1 \
         libglib2.0-0 \
-        && rm -rf /var/lib/apt/lists/*
 
 # Install pip for Python 3.10
 RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
@@ -39,7 +38,8 @@ RUN apt-get install -y \
     ros-noetic-openni-launch \
     ros-noetic-openni2-launch \
     nano \
-    ccache
+    ccache \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN rosdep update 
 
