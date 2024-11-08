@@ -26,5 +26,8 @@ RUN curl -sS https://bootstrap.pypa.io/get-pip.py | python3.10
 RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.8 1 && \
     update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 2
 
-# Install Open3D using the new Python 3.10 pip
-RUN python3 -m pip install --no-cache-dir open3d
+# Upgrade PyYAML specifically to avoid uninstall issues
+RUN python3 -m pip install --upgrade --ignore-installed pyyaml
+
+# Install Open3D using the new Python 3.10 pip with --ignore-installed option
+RUN python3 -m pip install --no-cache-dir --ignore-installed open3d
