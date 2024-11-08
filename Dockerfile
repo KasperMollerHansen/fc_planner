@@ -1,8 +1,6 @@
 FROM osrf/ros:noetic-desktop-full
 
 # Update and install dependencies for Python 3.10
-RUN apt-get update && apt-get upgrade -y
-
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
         software-properties-common && \
