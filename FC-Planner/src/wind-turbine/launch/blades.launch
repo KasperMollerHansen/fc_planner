@@ -19,7 +19,7 @@
   <!-- ! Skeleton-based Space Decomposition ! -->
   <param name="rosa_main/estimation_num" value="1000" type="int"/>
 
-  <param name="rosa_main/pcd" value="$(find wind-turbine)/data/windmill.pcd" type="string"/> <!-- Changed -->
+  <param name="rosa_main/pcd" value="$(find wind-turbine)/data/blades.pcd" type="string"/> <!-- Changed -->
 
   <param name="rosa_main/radius" value="0.1" type="double"/>
   <param name="rosa_main/th_mah" value="0.01" type="double"/>
@@ -65,7 +65,7 @@
   <!-- ! Hierarchical Coverage Planner ! -->
   <!-- <param name="hcplanner/mesh" value="$(find hierarchical_coverage_planner)/data/mesh/pipe.dae" type="string"/> --> <!-- Commented out due to missing object mesh -->
   
-  <param name="hcplanner/fullcloud" value="$(find wind-turbine)/data/windmill.pcd" type="string"/> <!-- Changed -->
+  <param name="hcplanner/fullcloud" value="$(find wind-turbine)/data/blades.pcd" type="string"/> <!-- Changed -->
 
   <param name="hcplanner/model_downsample_size" value="2.0" type="double"/>
   <param name="hcplanner/safe_inner_dist_coeff" value="1.1" type="double"/>
@@ -130,11 +130,11 @@
 
 
   <!-- Change? -->
-  <param name="hctraj/TrajFile" value="$(find wind-turbine)/solution/Traj/TrajInfoWindmill.txt" type="string"/> <!-- Changed -->
-  <param name="hctraj/CloudFile" value="$(find wind-turbine)/solution/Traj/CloudInfoWindmill.txt" type="string"/> <!-- Changed -->
-  <param name="hctraj/PosFile" value="$(find wind-turbine)/solution/Traj/PositionCoeffWindmill.txt" type="string"/> <!-- Changed -->
-  <param name="hctraj/PitchFile" value="$(find wind-turbine)/solution/Traj/PitchCoeffWindmill.txt" type="string"/> <!-- Changed -->
-  <param name="hctraj/YawFile" value="$(find wind-turbine)/solution/Traj/YawCoeffWindmill.txt" type="string"/> <!-- Changed -->
+  <param name="hctraj/TrajFile" value="$(find wind-turbine)/solution/Traj/TrajInfoBlades.txt" type="string"/> <!-- Changed -->
+  <param name="hctraj/CloudFile" value="$(find wind-turbine)/solution/Traj/CloudInfoBlades.txt" type="string"/> <!-- Changed -->
+  <param name="hctraj/PosFile" value="$(find wind-turbine)/solution/Traj/PositionCoeffBlades.txt" type="string"/> <!-- Changed -->
+  <param name="hctraj/PitchFile" value="$(find wind-turbine)/solution/Traj/PitchCoeffBlades.txt" type="string"/> <!-- Changed -->
+  <param name="hctraj/YawFile" value="$(find wind-turbine)/solution/Traj/YawCoeffBlades.txt" type="string"/> <!-- Changed -->
 
   <!-- ! FC-Planner ! -->
   <param name="hcopp/TimeStamp" value="0.3" type="double"/>
