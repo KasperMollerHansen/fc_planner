@@ -23,6 +23,8 @@ RUN apt-get install -y \
 
 RUN rosdep update 
 
+RUN python3 -m pip install --no-cache-dir open3d
+
 # Clone GitHub repo
 ARG CACHE_BUST
 ARG branch
@@ -35,8 +37,6 @@ RUN echo $CACHE_BUST && git clone -b $branch https://github.com/KasperMollerHans
 # Automatically source the ROS setup script and gpufreq 
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc \
     echo "sudo cpufreq-set -g performance" >> ~/.bashrc
-
-RUN pip install --no-cache-dir open3d
 
 # Build the FC-Planner package
 WORKDIR "fc_planner/FC-Planner"
