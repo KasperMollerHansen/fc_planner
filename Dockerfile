@@ -3,6 +3,10 @@ FROM osrf/ros:noetic-desktop-full
 RUN apt-get update && apt-get upgrade -y
     
 RUN apt-get install -y \
+    python3-pip\
+    python3-dev\
+    libgl1 \
+    libglib2.0-0 \
     python3-rosdep \
     libboost-all-dev \
     python3-catkin-tools \
@@ -19,7 +23,8 @@ RUN apt-get install -y \
     ros-noetic-openni-launch \
     ros-noetic-openni2-launch \
     nano \
-    ccache
+    ccache \
+    && rm -rf /var/lib/apt/lists/*
 
 RUN rosdep update 
 
