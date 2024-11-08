@@ -36,6 +36,8 @@ RUN echo $CACHE_BUST && git clone -b $branch https://github.com/KasperMollerHans
 RUN echo "source /opt/ros/noetic/setup.bash" >> ~/.bashrc \
     echo "sudo cpufreq-set -g performance" >> ~/.bashrc
 
+RUN pip install --no-cache-dir open3d
+
 # Build the FC-Planner package
 WORKDIR "fc_planner/FC-Planner"
 
