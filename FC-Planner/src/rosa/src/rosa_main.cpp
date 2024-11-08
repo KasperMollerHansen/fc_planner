@@ -945,6 +945,8 @@ namespace predrecon
     double bm_time = (double)bm_ms.count();
     ROS_INFO("\033[32m[SSD] branch merge time = %lf ms.\033[32m", bm_time);
   }
+
+
   /* prune small unnecessary branches */
   void ROSA_main::prune_branches()
   {
@@ -990,6 +992,8 @@ namespace predrecon
     cout << "prune_branch->segments: " << seg_count << endl;
     cout << "prune_branch->pairs: " << P.branch_seg_pairs.size() << endl;
   }
+
+
   /* restore the original scale of input pcloud */
   void ROSA_main::restore_scale()
   {
@@ -1050,6 +1054,8 @@ namespace predrecon
     double rs_time = (double)rs_ms.count();
     ROS_INFO("\033[32m[SSD] restore scale time = %lf ms.\033[32m", rs_time);
   }
+
+
   /* calculate inner dist in physical world */
   void ROSA_main::cal_inner_dist()
   {
@@ -1086,6 +1092,8 @@ namespace predrecon
     double cid_time = (double)cid_ms.count();
     ROS_INFO("\033[32m[SSD] calculate inner dist time = %lf ms.\033[32m", cid_time);
   }
+
+
   /* distribute original point cloud into each sub-space and segment */
   void ROSA_main::distribute_ori_cloud()
   {
@@ -1243,6 +1251,7 @@ namespace predrecon
 	  }
   }
   
+
   void ROSA_main::normal_estimation()
   {
     ROS_ERROR("Normal Estimation...");
@@ -1259,6 +1268,8 @@ namespace predrecon
     P.normals_.reset(new pcl::PointCloud<pcl::Normal>);
     P.normals_ = cloud_normals;
   }
+
+  
   /* Only scaling up with norm_scale-fold */
   void ROSA_main::normalize()
   { 

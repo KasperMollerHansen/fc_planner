@@ -81,7 +81,8 @@ namespace predrecon
     Fullmodel.reset(new pcl::PointCloud<pcl::PointXYZ>);
     visibleFullmodel.reset(new pcl::PointCloud<pcl::PointXYZ>);
     PR.occ_model.reset(new pcl::PointCloud<pcl::PointXYZ>);
-    pcl::io::loadPCDFile<pcl::PointXYZ>(fullcloud, *PR.occ_model);
+    pcl::io::loadPCDFile<pcl::PointXYZ>(fullcloud, *PR.occ_model); // READING POINTCLOUD FROM LAUNCH FILE
+  
 
     // * Mapping & Solver & Bidirectional Ray Casting (BiRC)
     HCMap->initHCMap(nh, PR.occ_model);
@@ -235,7 +236,9 @@ namespace predrecon
     for (int i = 0; i < (int)validBranchID.size(); ++i)
       newBranches.push_back(skeleton_operator->P.branches[validBranchID[i]]);
     skeleton_operator->P.branches.clear();
-    skeleton_operator->P.branches = newBranches;
+    skeleton_operator->P.branches = newBranches; // SUB-COMPONENTS OF THE SKELETON
+
+
 
     // * Hierarchical Coverage Planning
     CoveragePlan(false);
@@ -246,6 +249,7 @@ namespace predrecon
 
     vector<Eigen::VectorXd> HCOPPPath(PR.FullPath_.begin() + 1, PR.FullPath_.end());
     ROS_INFO("\033[35m[Planner] --- <Planner finished> --- \033[35m");
+    
     // * Coverage Evaluation
     auto cove_t1 = std::chrono::high_resolution_clock::now();
 
@@ -311,6 +315,8 @@ namespace predrecon
           }
     }
   }
+
+
 
   void hierarchical_coverage_planner::CoveragePlan(bool turn)
   {
