@@ -123,6 +123,7 @@ struct Pcloud
   Eigen::Vector3d center;
   vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> sub_space_scale; // points contained in each sub-space
   map<int, pcl::PointCloud<pcl::PointXYZ>::Ptr> seg_clouds_scale; // points contained in each segment, [seg_id, points]
+  
   Eigen::MatrixXd vertices_scale;
   map<Eigen::Vector3d, int, Vector3dCompare> pt_seg_pair;
   map<int, double> inner_dist_set; // inner distance (avg) of each sub-segment-space (for viewpoints generation)
