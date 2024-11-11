@@ -95,7 +95,8 @@ namespace predrecon
 
 
     // * Mapping & Solver & Bidirectional Ray Casting (BiRC)
-    HCMap->initHCMap(nh, PR.occ_model);
+    // HCMap->initHCMap(nh, PR.occ_model);
+    HCMap->initHCMap(nh, PR.blade_model);
     solver_->init(nh, HCMap->hcmp_->resolution_, HCMap->hcmp_->map_origin_);
     raycaster_->setParams(HCMap->hcmp_->resolution_, HCMap->hcmp_->map_origin_);
 
@@ -216,8 +217,6 @@ namespace predrecon
     // * Skeleton-guided Viewpoint Generation
     auto vpg_t1 = std::chrono::high_resolution_clock::now();
 
-
-
     // Generation of viewpoint (function below)
     viewpointGeneration();
 
@@ -253,11 +252,8 @@ namespace predrecon
       new_id++;
     }
 
-    /* --------------- VIEWPOINTS and BRANCHES--------------- */
-
     // TOTAL NUMBER OF VIEWPOINTS
     viewpointNum = (int)valid_viewpoints.size();
-    cout << viewpointNum; // TRY PRINTING THIS
 
     vector<vector<int>> newBranches; // Creates a 2D vector
 
@@ -266,7 +262,7 @@ namespace predrecon
       newBranches.push_back(skeleton_operator->P.branches[validBranchID[i]]);
 
     skeleton_operator->P.branches.clear();
-    skeleton_operator->P.branches = newBranches; // SUB-COMPONENTS OF THE SKELETON
+    skeleton_operator->P.branches = newBranches;
 
 
     // * Hierarchical Coverage Planning
@@ -605,6 +601,7 @@ namespace predrecon
           pt_vec(1) = pt_.y;
           pt_vec(2) = pt_.z;
           PR.pt_sub_pairs[pt_vec] = sub_id;
+
           // ! /* rosa orientation viewpoint generation */
           if (PR.pt_normal_pairs.find(pt_vec) != PR.pt_normal_pairs.end())
             normal_dir = PR.pt_normal_pairs.find(pt_vec)->second;
@@ -644,6 +641,7 @@ namespace predrecon
 
                 seg_vps->points.push_back(vp_fov_normal);
               }
+
               // for safety of viewpoints under ground constraint
               else
               {
