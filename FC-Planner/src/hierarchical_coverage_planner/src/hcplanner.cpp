@@ -232,6 +232,8 @@ namespace predrecon
       new_id++;
     }
 
+    /* --------------- VIEWPOINTS --------------- */
+
     // TOTAL NUMBER OF VIEWPOINTS
     viewpointNum = (int)valid_viewpoints.size();
     cout << viewpointNum; // TRY PRINTING THIS
@@ -239,10 +241,9 @@ namespace predrecon
     vector<vector<int>> newBranches;
     for (int i = 0; i < (int)validBranchID.size(); ++i)
       newBranches.push_back(skeleton_operator->P.branches[validBranchID[i]]);
+
     skeleton_operator->P.branches.clear();
     skeleton_operator->P.branches = newBranches; // SUB-COMPONENTS OF THE SKELETON
-
-    cout << P.branches; // TRY PRINTING THIS
 
 
 
