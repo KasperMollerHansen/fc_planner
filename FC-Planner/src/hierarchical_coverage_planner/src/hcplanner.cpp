@@ -34,7 +34,7 @@ namespace predrecon
   void hierarchical_coverage_planner::init(ros::NodeHandle &nh)
   {
     // * Module Initialization
-    skeleton_operator.reset(new ROSA_main);
+    skeleton_operator.reset(new ROSA_main); // .reset unassigns any previous smart-pointers
     HCMap.reset(new SDFMap);
     percep_utils_.reset(new PerceptionUtils);
     solver_.reset(new HCSolver);
@@ -235,11 +235,6 @@ namespace predrecon
       new_id++;
     }
 
-
-
-
-
-
     /* --------------- VIEWPOINTS and BRANCHES--------------- */
 
     // TOTAL NUMBER OF VIEWPOINTS
@@ -255,18 +250,9 @@ namespace predrecon
     skeleton_operator->P.branches.clear();
     skeleton_operator->P.branches = newBranches; // SUB-COMPONENTS OF THE SKELETON
 
-    /* --------------- VIEWPOINTS and BRANCHES --------------- */
-
-
-
-
-
-
 
     // * Hierarchical Coverage Planning
     CoveragePlan(false);
-
-
 
 
     auto plan_t2 = std::chrono::high_resolution_clock::now();
@@ -341,7 +327,6 @@ namespace predrecon
           }
     }
   }
-
 
 
   void hierarchical_coverage_planner::CoveragePlan(bool turn)
@@ -564,10 +549,6 @@ namespace predrecon
     }
   }
 
-
-
-  /* --------------- VIEWPOINT GENERATION -------------------*/
-
   void hierarchical_coverage_planner::viewpointGeneration()
   {
     /* ---------- Viewpoints Sub-space Sampling ---------- */
@@ -596,21 +577,15 @@ namespace predrecon
       /* find all segments in this sub-space */
       vector<int>().swap(segments_id);
       segments_id = skeleton_operator->P.branch_seg_pairs[sub_id];
-      
-
-      for (auto i : segments_id)
-        {
-          cout << i << "\n";
-        }
 
       // Sliced vector
-      vector<int> slice(segments_id.begin() + 5, segments_id.end());
+      // vector<int> slice(segments_id.begin() + 5, segments_id.end());
 
-      for (auto seg_id : slice)
+      for (auto seg_id : segments_id)
       // for (auto seg_id : slice)
       {
-        // for (int i = 0; i < (int)skeleton_operator->P.seg_clouds_scale[seg_id]->points.size(); ++i)
-        for (int i = 0; i < 2; ++i)
+        for (int i = 0; i < (int)skeleton_operator->P.seg_clouds_scale[seg_id]->points.size(); ++i)
+        // for (int i = 0; i < 2; ++i)
         {
           pt_ = skeleton_operator->P.seg_clouds_scale[seg_id]->points[i];
           pt_vec(0) = pt_.x;

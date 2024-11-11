@@ -115,11 +115,17 @@ namespace predrecon
 
     /* Invert Normalization */
     P.scale = norm_scale; 
-    P.center(0) = centroid(0); P.center(1) = centroid(1); P.center(2) = centroid(2); 
+    P.center(0) = centroid(0); 
+    P.center(1) = centroid(1); 
+    P.center(2) = centroid(2);
+
     restore_scale();
+
     /* distribute original pcloud */
     distribute_ori_cloud();
+
     cal_inner_dist();
+
     /* store real scale graph */
     storeRealGraph();
 
@@ -442,6 +448,8 @@ namespace predrecon
     ROS_INFO("\033[32m[SSD] drosa estimation time = %lf ms.\033[32m", drosa_time);
   }
   /* ROSA 2nd calculation */
+
+
   void ROSA_main::rosa_dcrosa()
   { 
     auto dcrosa_t1 = std::chrono::high_resolution_clock::now();
@@ -519,6 +527,8 @@ namespace predrecon
     double dcrosa_time = (double)dcrosa_ms.count();
     ROS_INFO("\033[32m[SSD] dcrosa estimation time = %lf ms.\033[32m", dcrosa_time);
   }
+
+
   /* graph extract */
   void ROSA_main::rosa_lineextract()
   {
@@ -711,6 +721,8 @@ namespace predrecon
     double line_time = (double)line_ms.count();
     ROS_INFO("\033[32m[SSD] line extraction time = %lf ms.\033[32m", line_time);
   }
+
+
   /* recentering */
   void ROSA_main::rosa_recenter()
   {
@@ -778,6 +790,8 @@ namespace predrecon
     double recenter_time = (double)recenter_ms.count();
     ROS_INFO("\033[32m[SSD] recentering time = %lf ms.\033[32m", recenter_time);
   }
+  
+  
   /* find joints and graph decomposition */
   void ROSA_main::graph_decomposition()
   {
@@ -840,6 +854,8 @@ namespace predrecon
     double graph_time = (double)graph_ms.count();
     ROS_INFO("\033[32m[SSD] graph decomposition time = %lf ms.\033[32m", graph_time);
   }
+  
+  
   /* branch inner sub-decomposition */
   void ROSA_main::inner_decomposition()
   {
@@ -880,6 +896,8 @@ namespace predrecon
     double inner_time = (double)inner_ms.count();
     ROS_INFO("\033[32m[SSD] inner decomposition time = %lf ms.\033[32m", inner_time);
   }
+  
+  
   /* merge these individual branches with small length */
   void ROSA_main::branch_merge()
   {
@@ -977,7 +995,6 @@ namespace predrecon
     double bm_time = (double)bm_ms.count();
     ROS_INFO("\033[32m[SSD] branch merge time = %lf ms.\033[32m", bm_time);
   }
-
 
   /* prune small unnecessary branches */
   void ROSA_main::prune_branches()
@@ -1244,6 +1261,7 @@ namespace predrecon
     ROS_INFO("\033[32m[SSD] store real graph time = %lf ms.\033[32m", srg_time);
   }
 
+
   void ROSA_main::rosa_initialize(pcl::PointCloud<pcl::PointXYZ>::Ptr& cloud, pcl::PointCloud<pcl::Normal>::Ptr& normals)
   {
     int psize = (int)cloud->points.size();
@@ -1261,6 +1279,7 @@ namespace predrecon
     }
   }
 
+
   void ROSA_main::pcloud_isoncut(Eigen::Vector3d& p_cut, Eigen::Vector3d& v_cut, vector<int>& isoncut, double*& datas, int& size)
   {
     DataWrapper data;
@@ -1269,6 +1288,7 @@ namespace predrecon
     vector<double> n(3); n[0] = v_cut(0); n[1] = v_cut(1); n[2] = v_cut(2);
     distance_query(data, p, n, delta, isoncut);
   }
+
 
   void ROSA_main::distance_query(DataWrapper& data, const vector<double>& Pp, const vector<double>& Np, double delta, vector<int>& isoncut)
   {
@@ -1397,6 +1417,8 @@ namespace predrecon
     double norm_time = (double)norm_ms.count();
     ROS_INFO("\033[32m[SSD] normalize time = %lf ms.\033[32m", norm_time);
   } 
+  
+  
   /* orthonormal basis generation */
   Eigen::Matrix3d ROSA_main::create_orthonormal_frame(Eigen::Vector3d& v)
   {
@@ -1405,7 +1427,9 @@ namespace predrecon
     double TH_ZERO = 1e-10;
     srand((unsigned)time(NULL));
     Eigen::Matrix3d M=Eigen::Matrix3d::Zero();
-    M(0,0) = v(0); M(0,1) = v(1); M(0,2) = v(2); 
+    M(0,0) = v(0); 
+    M(0,1) = v(1); 
+    M(0,2) = v(2); 
     Eigen::Vector3d new_vec, temp_vec;
     for (int i=1; i<3; ++i)
     {
@@ -1421,11 +1445,14 @@ namespace predrecon
         temp_vec = (new_vec - new_vec.dot(M.row(j))*(M.row(j).transpose()));
         new_vec = temp_vec/temp_vec.norm();
       }
-      M(i,0) = new_vec(0); M(i,1) = new_vec(1); M(i,2) = new_vec(2); 
+      M(i,0) = new_vec(0); 
+      M(i,1) = new_vec(1); 
+      M(i,2) = new_vec(2); 
     }
 
     return M;
   }
+
 
   Eigen::MatrixXd ROSA_main::rosa_compute_active_samples(int& idx, Eigen::Vector3d& p_cut, Eigen::Vector3d& v_cut)
   {
@@ -1461,6 +1488,7 @@ namespace predrecon
     return out_indxs;
   }
 
+
   Eigen::Vector3d ROSA_main::compute_symmetrynormal(Eigen::MatrixXd& local_normals)
   {
     Eigen::Matrix3d M; Eigen::Vector3d vec;
@@ -1485,6 +1513,7 @@ namespace predrecon
     return vec;
   }
 
+
   double ROSA_main::symmnormal_variance(Eigen::Vector3d& symm_nor, Eigen::MatrixXd& local_normals)
   {
     Eigen::MatrixXd repmat; Eigen::VectorXd alpha;
@@ -1503,6 +1532,7 @@ namespace predrecon
 
     return var;
   }
+
 
   Eigen::Vector3d ROSA_main::symmnormal_smooth(Eigen::MatrixXd& V, Eigen::MatrixXd& w)
   {
@@ -1525,6 +1555,7 @@ namespace predrecon
 
     return vec;
   }
+
 
   Eigen::Vector3d ROSA_main::closest_projection_point(Eigen::MatrixXd& P, Eigen::MatrixXd& V)
   {
@@ -1558,6 +1589,7 @@ namespace predrecon
     return vec;
   }
 
+
   int ROSA_main::argmax_eigen(Eigen::MatrixXd &x) 
   {
     Eigen::MatrixXd::Index maxRow, maxCol;
@@ -1565,6 +1597,7 @@ namespace predrecon
     int idx = maxRow;
     return idx;
   }
+
 
   void ROSA_main::dfs(int& v)
   {
@@ -1652,6 +1685,7 @@ namespace predrecon
     }
   }
 
+
   bool ROSA_main::ocr_node(int& n, list<int>& candidates)
   {
     bool flag = false;
@@ -1666,6 +1700,7 @@ namespace predrecon
 
     return flag;
   }
+
 
   vector<vector<int>> ROSA_main::divide_branch(vector<int>& input_branch)
   {
@@ -1726,6 +1761,7 @@ namespace predrecon
 
     return divide_set;
   }
+
 
   vector<int> ROSA_main::merge_branch(vector<int>& input_branch)
   {
@@ -1817,6 +1853,7 @@ namespace predrecon
     return merge_set;
   }
 
+
   bool ROSA_main::prune(vector<int>& input_branch)
   {
     bool prune_flag = false;
@@ -1857,6 +1894,7 @@ namespace predrecon
     return prune_flag;
   }
 
+
   double ROSA_main::distance_point_line(Eigen::Vector3d& point, Eigen::Vector3d& line_pt, Eigen::Vector3d& line_dir)
   {
     // Find a point on the line closest to the given point
@@ -1867,6 +1905,7 @@ namespace predrecon
     // Calculate the distance between the given point and the closest point on the line
     return (point - closest_pt_on_line).norm();
   }
+
 
   Eigen::Vector3d ROSA_main::PCA(Eigen::MatrixXd& A)
   {

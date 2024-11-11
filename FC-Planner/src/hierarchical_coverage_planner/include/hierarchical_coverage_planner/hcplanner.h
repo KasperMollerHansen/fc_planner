@@ -158,8 +158,10 @@ public:
   voxel_map::VoxelMap voxelMap;
   /* Param */
   bool visFlag;
+
   /* Utils */
   unique_ptr<ROSA_main> skeleton_operator;
+  
   /* Statistic */
   double hcoppCT;
   double HCOPPTime;
