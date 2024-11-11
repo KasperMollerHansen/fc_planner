@@ -95,8 +95,7 @@ namespace predrecon
 
 
     // * Mapping & Solver & Bidirectional Ray Casting (BiRC)
-    // HCMap->initHCMap(nh, PR.occ_model);
-    HCMap->initHCMap(nh, PR.blade_model);
+    HCMap->initHCMap(nh, PR.occ_model);
     solver_->init(nh, HCMap->hcmp_->resolution_, HCMap->hcmp_->map_origin_);
     raycaster_->setParams(HCMap->hcmp_->resolution_, HCMap->hcmp_->map_origin_);
 
