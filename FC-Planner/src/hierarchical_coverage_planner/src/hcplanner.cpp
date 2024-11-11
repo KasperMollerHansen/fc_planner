@@ -80,13 +80,13 @@ namespace predrecon
     nh.param("hcplanner/fullcloud", fullcloud, string("null"));
     nh.param("hcplanner/bladecloud", bladecloud, string("null")); //ADDED
     Blademodel.reset(new pcl::PointCloud<pcl::PointXYZ>); // ADDED
-    
+
     PR.blade_model.reset(new pcl::PointCloud<pcl::PointXYZ>); // ADDED
     pcl::io::loadPCDFile<pcl::PointXYZ>(bladecloud, *PR.blade_model); // ADDED
 
     for (auto i : PR.blade_model->points) { // ADDED
       cout << i << "\n";
-    }
+    } // WORKS
 
     Fullmodel.reset(new pcl::PointCloud<pcl::PointXYZ>);
     visibleFullmodel.reset(new pcl::PointCloud<pcl::PointXYZ>);
@@ -110,7 +110,9 @@ namespace predrecon
     auto plan_t1 = std::chrono::high_resolution_clock::now();
 
     // * Skeleton-based Space Decomposition
-    skeleton_operator->main();
+    skeleton_operator->main(); // This line runs the ROSA_main::main() function (from rosa_main.cpp)
+
+
     rosaCloud.reset(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointXYZ vertex;
     for (int i = 0; i < (int)skeleton_operator->P.realVertices.rows(); ++i)

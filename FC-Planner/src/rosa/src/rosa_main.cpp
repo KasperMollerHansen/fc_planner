@@ -84,7 +84,7 @@ namespace predrecon
     vset.resize(pcd_size_, 3);
     vvar.resize(pcd_size_, 1);
 
-    P.datas = new double[pcd_size_*3](); // ALLOCATE MEMORY FOR PCD POINT
+    P.datas = new double[pcd_size_*3](); // ALLOCATE MEMORY FOR PCD POINTS prior to processing (Zero-initiated)
 
     // Move read points to main data frame
     for (int idx=0; idx<pcd_size_; idx++)
