@@ -200,7 +200,7 @@ namespace predrecon
 
 
 
-
+    // Generation of viewpoint (function below)
     viewpointGeneration();
 
     auto vpg_t2 = std::chrono::high_resolution_clock::now();
@@ -248,8 +248,8 @@ namespace predrecon
 
     vector<vector<int>> newBranches; // Creates a 2D vector
 
-    // for (int i = 0; i < (int)validBranchID.size(); ++i)
-    for (int i = 0; i < 1; ++i)
+    for (int i = 0; i < (int)validBranchID.size(); ++i)
+    // for (int i = 0; i < 2; ++i)
       newBranches.push_back(skeleton_operator->P.branches[validBranchID[i]]);
 
     skeleton_operator->P.branches.clear();
@@ -567,6 +567,7 @@ namespace predrecon
 
 
   /* --------------- VIEWPOINT GENERATION -------------------*/
+
   void hierarchical_coverage_planner::viewpointGeneration()
   {
     /* ---------- Viewpoints Sub-space Sampling ---------- */
@@ -598,7 +599,8 @@ namespace predrecon
 
       for (auto seg_id : segments_id)
       {
-        for (int i = 0; i < (int)skeleton_operator->P.seg_clouds_scale[seg_id]->points.size(); ++i)
+        // for (int i = 0; i < (int)skeleton_operator->P.seg_clouds_scale[seg_id]->points.size(); ++i)
+        for (int i = 0; i < 2; ++i)
         {
           pt_ = skeleton_operator->P.seg_clouds_scale[seg_id]->points[i];
           pt_vec(0) = pt_.x;
