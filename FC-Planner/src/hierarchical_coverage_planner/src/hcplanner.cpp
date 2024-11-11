@@ -174,7 +174,7 @@ namespace predrecon
     }
 
     for (auto i : PR.model->points) {
-      cout << i << "\n"
+      cout << i << "\n";
     }
 
     ROS_INFO("\033[33m[Planner] input points size = %d. \033[32m", (int)PR.model->points.size());
