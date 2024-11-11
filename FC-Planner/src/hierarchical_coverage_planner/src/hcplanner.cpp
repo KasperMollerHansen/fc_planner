@@ -603,12 +603,8 @@ namespace predrecon
           cout << i << "\n";
         }
 
-
-
       // Sliced vector
       vector<int> slice(segments_id.begin() + 5, segments_id.end());
-
-      std::cout << slice << "\n";
 
       for (auto seg_id : slice)
       // for (auto seg_id : slice)
