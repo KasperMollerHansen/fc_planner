@@ -159,6 +159,7 @@ namespace predrecon
       ds.setInputCloud(seg_cloud.second);
       ds.setLeafSize(model_ds_size, model_ds_size, model_ds_size);
       ds.filter(*seg_cloud.second);
+
       pcl::PointCloud<pcl::PointXYZ>::Ptr tempSeg(new pcl::PointCloud<pcl::PointXYZ>);
       for (int i = 0; i < (int)seg_cloud.second->points.size(); ++i)
       {
@@ -171,6 +172,11 @@ namespace predrecon
       }
       *PR.model += *tempSeg;
     }
+
+    for (auto i : PR.model->points) {
+      cout << i << "\n"
+    }
+
     ROS_INFO("\033[33m[Planner] input points size = %d. \033[32m", (int)PR.model->points.size());
     model_tree.setInputCloud(PR.model);
     OriModelTree.setInputCloud(PR.ori_model);
