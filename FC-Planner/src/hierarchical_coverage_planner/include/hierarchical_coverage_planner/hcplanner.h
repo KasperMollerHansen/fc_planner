@@ -112,6 +112,8 @@ struct PathResult
   pcl::PointCloud<pcl::PointXYZ>::Ptr ori_model;
   pcl::PointCloud<pcl::PointXYZ>::Ptr occ_model;
   pcl::PointCloud<pcl::PointXYZ>::Ptr model;
+  pcl::PointCloud<pcl::PointXYZ>::Ptr blade_model; // ADDED
+  
   map<int, pcl::PointCloud<pcl::PointXYZ>::Ptr> sub_vps_inflate;
   map<int, Eigen::MatrixXd> sub_vps_pose;
   map<int, vector<bool>> cover_state; // [int: seg_id], coverage state of each voxel in each segment
@@ -153,15 +155,17 @@ public:
   void HCPlan(ros::NodeHandle& nh);
   double CoverageEvaluation(vector<Eigen::VectorXd>& poseSet);
   void PinHoleCamera(Eigen::VectorXd& vp, vector<int>& covered_id, pcl::PointCloud<pcl::PointXYZ>::Ptr& checkCloud);
+  
   /* Data */
   PathResult PR;
+  
   voxel_map::VoxelMap voxelMap;
   /* Param */
   bool visFlag;
 
   /* Utils */
   unique_ptr<ROSA_main> skeleton_operator;
-  
+
   /* Statistic */
   double hcoppCT;
   double HCOPPTime;
@@ -169,10 +173,14 @@ public:
   vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> visible_group;
   double coverage;
   int viewpointNum;
+
   /* Evaluation */
   string fullcloud;
   pcl::PointCloud<pcl::PointXYZ>::Ptr Fullmodel;
   pcl::PointCloud<pcl::PointXYZ>::Ptr visibleFullmodel;
+
+  string bladecloud; // ADDED
+  pcl::PointCloud<pcl::PointXYZ>::Ptr Blademodel; // ADDED
 
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 

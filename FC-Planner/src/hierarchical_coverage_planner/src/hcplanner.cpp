@@ -78,11 +78,19 @@ namespace predrecon
 
     // * Evaluation
     nh.param("hcplanner/fullcloud", fullcloud, string("null"));
+    nh.param("hcplanner/bladecloud", bladecloud, string("null")); //ADDED
+    Blademodel.reset(new pcl::PointCloud<pcl::PointXYZ>); // ADDED
+    pcl::io::loadPCDFile<pcl::PointXYZ>(bladecloud, *PR.blade_model); // ADDED
+
+    for (i : PR.blade_model->points) {
+      cout << i << "\n";
+    }
+
     Fullmodel.reset(new pcl::PointCloud<pcl::PointXYZ>);
     visibleFullmodel.reset(new pcl::PointCloud<pcl::PointXYZ>);
-    PR.occ_model.reset(new pcl::PointCloud<pcl::PointXYZ>);
-    pcl::io::loadPCDFile<pcl::PointXYZ>(fullcloud, *PR.occ_model); // READING POINTCLOUD FROM LAUNCH FILE
-  
+    PR.occ_model.reset(new pcl::PointCloud<pcl::PointXYZ>); // Creating new point cloud object
+    pcl::io::loadPCDFile<pcl::PointXYZ>(fullcloud, *PR.occ_model); // Load .pcd file into pcl object (occ_model)
+
 
     // * Mapping & Solver & Bidirectional Ray Casting (BiRC)
     HCMap->initHCMap(nh, PR.occ_model);
@@ -578,14 +586,9 @@ namespace predrecon
       vector<int>().swap(segments_id);
       segments_id = skeleton_operator->P.branch_seg_pairs[sub_id];
 
-      // Sliced vector
-      // vector<int> slice(segments_id.begin() + 5, segments_id.end());
-
       for (auto seg_id : segments_id)
-      // for (auto seg_id : slice)
       {
         for (int i = 0; i < (int)skeleton_operator->P.seg_clouds_scale[seg_id]->points.size(); ++i)
-        // for (int i = 0; i < 2; ++i)
         {
           pt_ = skeleton_operator->P.seg_clouds_scale[seg_id]->points[i];
           pt_vec(0) = pt_.x;
