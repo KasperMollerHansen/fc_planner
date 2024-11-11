@@ -248,8 +248,8 @@ namespace predrecon
 
     vector<vector<int>> newBranches; // Creates a 2D vector
 
-    for (int i = 0; i < (int)validBranchID.size(); ++i)
-    for (int i = 0; i < 2; ++i)
+    // for (int i = 0; i < (int)validBranchID.size(); ++i)
+    for (int i = 0; i < 1; ++i)
       newBranches.push_back(skeleton_operator->P.branches[validBranchID[i]]);
 
     skeleton_operator->P.branches.clear();
