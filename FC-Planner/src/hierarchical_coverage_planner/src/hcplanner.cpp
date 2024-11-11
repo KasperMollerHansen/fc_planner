@@ -596,8 +596,11 @@ namespace predrecon
       /* find all segments in this sub-space */
       vector<int>().swap(segments_id);
       segments_id = skeleton_operator->P.branch_seg_pairs[sub_id];
+      vector<int> slice(segments_id.begin() + 1, segments_id.end())
 
-      for (auto seg_id : segments_id)
+
+      // for (auto seg_id : segments_id)
+      for (auto seg_id : slice)
       {
         // for (int i = 0; i < (int)skeleton_operator->P.seg_clouds_scale[seg_id]->points.size(); ++i)
         for (int i = 0; i < 2; ++i)
@@ -623,6 +626,7 @@ namespace predrecon
           {
             continue;
           }
+
 
           if (zFlag == true)
           {
@@ -672,6 +676,7 @@ namespace predrecon
               }
             }
           }
+
           if (zFlag == false)
           {
             vp_vec(0) = vp.x;
