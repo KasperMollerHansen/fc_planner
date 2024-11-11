@@ -596,12 +596,16 @@ namespace predrecon
       /* find all segments in this sub-space */
       vector<int>().swap(segments_id);
       segments_id = skeleton_operator->P.branch_seg_pairs[sub_id];
+      
+      cout << "Segment ID" << segments_id << '\n';
 
       // Sliced vector
-      vector<int> slice(segments_id.begin() + 1, segments_id.end());
+      vector<int> slice(segments_id.begin() + 5, segments_id.end());
 
-      // for (auto seg_id : segments_id)
-      for (auto seg_id : slice)
+      cout << "Sliced" << slice << "\n";
+
+      for (auto seg_id : segments_id)
+      // for (auto seg_id : slice)
       {
         // for (int i = 0; i < (int)skeleton_operator->P.seg_clouds_scale[seg_id]->points.size(); ++i)
         for (int i = 0; i < 2; ++i)
