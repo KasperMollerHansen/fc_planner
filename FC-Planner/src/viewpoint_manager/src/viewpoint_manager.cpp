@@ -95,6 +95,7 @@ namespace predrecon
       ROS_ERROR("[ViewpointManager] Input model is empty!!");
       return;
     }
+    // INPUT POINT CLOUD TO VIEWPOINT MANAGER
     pcl::PointCloud<pcl::PointXYZ>::Ptr new_model(new pcl::PointCloud<pcl::PointXYZ>);
     *new_model = *input_model;
     model_ = new_model;
