@@ -80,9 +80,11 @@ namespace predrecon
     nh.param("hcplanner/fullcloud", fullcloud, string("null"));
     nh.param("hcplanner/bladecloud", bladecloud, string("null")); //ADDED
     Blademodel.reset(new pcl::PointCloud<pcl::PointXYZ>); // ADDED
+    
+    PR.blade_model.reset(new pcl::PointCloud<pcl::PointXYZ>); // ADDED
     pcl::io::loadPCDFile<pcl::PointXYZ>(bladecloud, *PR.blade_model); // ADDED
 
-    for (i : PR.blade_model->points) {
+    for (auto i : PR.blade_model->points) { // ADDED
       cout << i << "\n";
     }
 
