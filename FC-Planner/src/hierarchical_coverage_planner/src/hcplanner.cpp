@@ -597,12 +597,12 @@ namespace predrecon
       vector<int>().swap(segments_id);
       segments_id = skeleton_operator->P.branch_seg_pairs[sub_id];
       
-      // cout << "Segment ID" << segments_id << '\n';
+      cout << "Segment ID" << segments_id << '\n';
 
       // Sliced vector
       vector<int> slice(segments_id.begin() + 5, segments_id.end());
 
-      cout << "Sliced" << slice << "\n";
+      // cout << "Sliced" << slice << "\n";
 
       for (auto seg_id : segments_id)
       // for (auto seg_id : slice)
