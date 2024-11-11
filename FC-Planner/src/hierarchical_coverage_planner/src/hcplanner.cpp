@@ -105,10 +105,12 @@ namespace predrecon
     pcl::PointXYZ vertex;
     for (int i = 0; i < (int)skeleton_operator->P.realVertices.rows(); ++i)
     {
+      cout << points; //TRY PRINTING
       vertex.x = skeleton_operator->P.realVertices(i, 0);
       vertex.y = skeleton_operator->P.realVertices(i, 1);
       vertex.z = skeleton_operator->P.realVertices(i, 2);
       rosaCloud->points.push_back(vertex);
+      cout << points;
     }
     ROSATree.setInputCloud(rosaCloud);
 
@@ -198,6 +200,9 @@ namespace predrecon
     // * Skeleton-guided Viewpoint Generation
     auto vpg_t1 = std::chrono::high_resolution_clock::now();
 
+
+
+
     viewpointGeneration();
 
     auto vpg_t2 = std::chrono::high_resolution_clock::now();
@@ -232,6 +237,11 @@ namespace predrecon
       new_id++;
     }
 
+
+
+
+
+
     /* --------------- VIEWPOINTS and BRANCHES--------------- */
 
     // TOTAL NUMBER OF VIEWPOINTS
@@ -245,9 +255,12 @@ namespace predrecon
 
     skeleton_operator->P.branches.clear();
     skeleton_operator->P.branches = newBranches; // SUB-COMPONENTS OF THE SKELETON
-    cout << newBranches;
 
     /* --------------- VIEWPOINTS and BRANCHES --------------- */
+
+
+
+
 
 
 
@@ -552,6 +565,9 @@ namespace predrecon
     }
   }
 
+
+
+  /* --------------- VIEWPOINT GENERATION -------------------*/
   void hierarchical_coverage_planner::viewpointGeneration()
   {
     /* ---------- Viewpoints Sub-space Sampling ---------- */

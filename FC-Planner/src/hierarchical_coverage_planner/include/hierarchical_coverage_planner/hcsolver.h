@@ -117,6 +117,7 @@ private:
   int local2optNum;
   double astarSearchingRes;
   int swapTimes;
+
   /* Data */
   Eigen::Vector3d solver_start_;
   map<int, Eigen::MatrixXd> local_sub_costmat_;
@@ -128,6 +129,7 @@ private:
   map<vector<int>, vector<Eigen::VectorXd>> path_waypts_;
   map<int, vector<Eigen::VectorXd>> local_sub_path_viewpts_;
   map<int, vector<vector<Eigen::VectorXd>>> local_sub_path_waypts_;
+  
   /* Refine Data */
   vector<Eigen::Vector3d> LocalVps;
   map<Eigen::Vector3d, int, Vector3dCompare> RefineID;

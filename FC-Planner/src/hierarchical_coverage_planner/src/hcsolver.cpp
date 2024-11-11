@@ -93,18 +93,23 @@ namespace predrecon
     {
       /* write par file */
       GlobalParWrite();
+
       /* construct ATSP cost matrix */
       Eigen::MatrixXd GloablCostMat;
       GloablCostMat = GlobalCostMat(solver_start_, centroids);
+
       /* write problem file */
       GlobalProblemWrite(GloablCostMat);
+
       /* ATSP solving */
       string command_ = "cd " + GlobalSolver_ + " && ./LKH " + GlobalPar_;
       const char* charPtr = command_.c_str();
       system_back_=system(charPtr);
+
       /* read solution results */
       GlobalSeq = GlobalResultsRead();
     }
+    
     else
     {
       int id_ = -1;
