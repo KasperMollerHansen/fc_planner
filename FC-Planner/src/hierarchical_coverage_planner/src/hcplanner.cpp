@@ -596,8 +596,9 @@ namespace predrecon
       /* find all segments in this sub-space */
       vector<int>().swap(segments_id);
       segments_id = skeleton_operator->P.branch_seg_pairs[sub_id];
-      vector<int> slice(segments_id.begin() + 1, segments_id.end())
 
+      // Sliced vector
+      vector<int> slice(segments_id.begin() + 1, segments_id.end());
 
       // for (auto seg_id : segments_id)
       for (auto seg_id : slice)
