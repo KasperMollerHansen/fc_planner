@@ -20,8 +20,9 @@ class Segmentation:
     
     def main(self):
         src_path = self._get_path_to_src()
-        pcd = self._read_point_cloud(src_path + "/wind-turbine/data/", "windmill.pcd")
-        o3d.visualization.draw_geometries([pcd])
+        wings = self._read_point_cloud(src_path + "/wind-turbine/data/", "wings_gt_ds.pcd")
+        tower = self._read_point_cloud(src_path + "/wind-turbine/data/", "tower_gt_ds.pcd")
+        o3d.visualization.draw_geometries([wings, tower])
 
 
 #%%
