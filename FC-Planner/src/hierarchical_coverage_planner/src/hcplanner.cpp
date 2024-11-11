@@ -232,23 +232,30 @@ namespace predrecon
       new_id++;
     }
 
-    /* --------------- VIEWPOINTS --------------- */
+    /* --------------- VIEWPOINTS and BRANCHES--------------- */
 
     // TOTAL NUMBER OF VIEWPOINTS
     viewpointNum = (int)valid_viewpoints.size();
     cout << viewpointNum; // TRY PRINTING THIS
 
     vector<vector<int>> newBranches;
+
     for (int i = 0; i < (int)validBranchID.size(); ++i)
       newBranches.push_back(skeleton_operator->P.branches[validBranchID[i]]);
 
     skeleton_operator->P.branches.clear();
     skeleton_operator->P.branches = newBranches; // SUB-COMPONENTS OF THE SKELETON
+    cout << newBranches;
+
+    /* --------------- VIEWPOINTS and BRANCHES --------------- */
 
 
 
     // * Hierarchical Coverage Planning
     CoveragePlan(false);
+
+
+
 
     auto plan_t2 = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> plan_ms = plan_t2 - plan_t1;
