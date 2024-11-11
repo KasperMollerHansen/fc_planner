@@ -70,8 +70,10 @@ namespace predrecon
   {
     // * Skeleton-based Space Decomposition
     skeleton_operator->main();
+    
     rosaCloud.reset(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::PointXYZ vertex;
+
     for (int i = 0; i < (int)skeleton_operator->P.realVertices.rows(); ++i)
     {
       vertex.x = skeleton_operator->P.realVertices(i, 0);

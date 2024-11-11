@@ -47,25 +47,34 @@ namespace predrecon
     nh.param("rosa_main/upper_bound_original_points_num", ori_num, -1);
     nh.param("rosa_main/Ground", ground, false);
     nh.param("rosa_main/estimation_num", estNum, -1);
+
     /* Visualization */
     vis_utils_.reset(new PlanningVisualization(nh));
     visFlag = true;
     vis_timer_ = nh.createTimer(ros::Duration(0.1), &ROSA_main::VisCallback, this);
+
     /* Initialization */
     pcd_size_ = 0;
     groundHeight = 0.0;
     ROS_INFO("\033[34m[SSD] Initialized!\033[34m");
   }
+
+
   /* ROSA main function */
   void ROSA_main::main()
   {
-    pcloud_read_off();
+
+    /* pcloud_read_off() reads input_pcd file and assigns the struct Pcloud 
+    (referenced as P) its variables (e.g. pts_, pcd_size_, etc.) */
+    pcloud_read_off(); 
+    
     // ? Normal estimation.
     auto nrl_t1 = std::chrono::high_resolution_clock::now();
     normalize();
     auto nrl_t2 = std::chrono::high_resolution_clock::now();
     std::chrono::duration<double, std::milli> nrl_ms = nrl_t2 - nrl_t1;
     double nrlt = (double)nrl_ms.count();
+
     // ? Algorithm starts here.
     auto rosa_t1 = std::chrono::high_resolution_clock::now();
 
@@ -74,9 +83,16 @@ namespace predrecon
     pset.resize(pcd_size_, 3);
     vset.resize(pcd_size_, 3);
     vvar.resize(pcd_size_, 1);
-    P.datas = new double[pcd_size_*3]();
+
+    P.datas = new double[pcd_size_*3](); // ALLOCATE MEMORY FOR PCD POINT
+
+    // Move read points to main data frame
     for (int idx=0; idx<pcd_size_; idx++)
-    {  P.datas[idx] = P.pts_->points[idx].x; P.datas[idx+pcd_size_] = P.pts_->points[idx].y; P.datas[idx+2*pcd_size_] = P.pts_->points[idx].z;} 
+    {  
+    P.datas[idx] = P.pts_->points[idx].x; 
+    P.datas[idx+pcd_size_] = P.pts_->points[idx].y; 
+    P.datas[idx+2*pcd_size_] = P.pts_->points[idx].z;
+    } 
     
     pcloud_adj_matrix_mahalanobis(Radius);
     rosa_drosa();
@@ -96,6 +112,7 @@ namespace predrecon
         cout << y << " ";
       cout << "}" << endl;
     }
+
     /* Invert Normalization */
     P.scale = norm_scale; 
     P.center(0) = centroid(0); P.center(1) = centroid(1); P.center(2) = centroid(2); 
@@ -177,6 +194,8 @@ namespace predrecon
     vis_utils_->publish_decomposition(P.vertices_scale, P.branches, P.mainDirBranches, P.centroidBranches);
     }
   }
+
+
   /* read point cloud input */
   void ROSA_main::pcloud_read_off()
   {
@@ -185,12 +204,16 @@ namespace predrecon
 
     pcl::io::loadPCDFile<pcl::PointXYZ>(input_pcd, *P.pts_);
 
-    pcd_size_ = P.pts_->points.size();
+    // POINT CLOUD SIZE and point matrix
+    pcd_size_ = P.pts_->points.size(); 
     P.pts_mat.resize(pcd_size_, 3);
     P.nrs_mat.resize(pcd_size_, 3);
+    // Move x,y,z components to matrix
     for (int i=0; i<pcd_size_; ++i)
     {
-      P.pts_mat(i,0) = P.pts_->points[i].x; P.pts_mat(i,1) = P.pts_->points[i].y; P.pts_mat(i,2) = P.pts_->points[i].z;
+      P.pts_mat(i,0) = P.pts_->points[i].x; 
+      P.pts_mat(i,1) = P.pts_->points[i].y; 
+      P.pts_mat(i,2) = P.pts_->points[i].z;
     }
 
     if (ground == true)
@@ -205,7 +228,9 @@ namespace predrecon
       pcl::PointXYZ SnowFallPt;
       for (auto p:P.pts_->points)
       {
-        SnowFallPt.x = p.x; SnowFallPt.y = p.y; SnowFallPt.z = groundHeight-0.01;
+        SnowFallPt.x = p.x; 
+        SnowFallPt.y = p.y; 
+        SnowFallPt.z = groundHeight-0.01;
         P.ground_pts_->points.push_back(SnowFallPt);
       }
 
@@ -222,6 +247,8 @@ namespace predrecon
       rs.filter(*P.ground_pts_);
     }
   }
+
+
   /* calculate mahalanobis length */
   double ROSA_main::mahalanobis_leth(pcl::PointXYZ& p1, pcl::Normal& v1, pcl::PointXYZ& p2, pcl::Normal& v2, double& r)
   {
@@ -240,6 +267,8 @@ namespace predrecon
     
     return w;
   }
+
+
   /* calculate mahalanobis adj matrix */
   void ROSA_main::pcloud_adj_matrix_mahalanobis(double& r_range)
   {
@@ -289,6 +318,8 @@ namespace predrecon
     ROS_INFO("\033[32m[SSD] calculate adj matrix time = %lf ms.\033[32m", adj_time);
   }
   /* ROSA 1st calculation */
+
+
   void ROSA_main::rosa_drosa()
   {
     auto drosa_t1 = std::chrono::high_resolution_clock::now();
@@ -930,7 +961,8 @@ namespace predrecon
       for (int i=0; i<(int)x.size()-1; ++i)
       {
         vector<int>().swap(indexer);
-        indexer.push_back(x[i]); indexer.push_back(x[i+1]);
+        indexer.push_back(x[i]); 
+        indexer.push_back(x[i+1]);
         P.segments[seg_count] = indexer;
         seg_set.push_back(seg_count);
         seg_count++;
@@ -1178,6 +1210,8 @@ namespace predrecon
     double doc_time = (double)doc_ms.count();
     ROS_INFO("\033[32m[SSD] distribute original cloud time = %lf ms.\033[32m", doc_time);
   }
+
+
   /* store real scale ROSA graph */
   void ROSA_main::storeRealGraph()
   {

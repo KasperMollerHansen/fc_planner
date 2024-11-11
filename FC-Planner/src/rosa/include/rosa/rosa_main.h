@@ -82,7 +82,7 @@ struct Vector3dHash
 
 struct Pcloud
 {
-  pcl::PointCloud<pcl::PointXYZ>::Ptr pts_;
+  pcl::PointCloud<pcl::PointXYZ>::Ptr pts_; // Pointer of raw pcd data
   pcl::PointCloud<pcl::PointXYZ>::Ptr ori_pts_;
   pcl::PointCloud<pcl::PointXYZ>::Ptr ground_pts_;
   pcl::PointCloud<pcl::Normal>::Ptr normals_;
@@ -93,7 +93,7 @@ struct Pcloud
   vector<vector<int>> neighs;
   vector<vector<int>> neighs_new;
   vector<vector<int>> surf_neighs;
-  double* datas;
+  double* datas; // Pointer member of struct Pcloud
   double* fastDatas;
   Eigen::MatrixXd skelver;
   Eigen::MatrixXd corresp;
@@ -113,8 +113,12 @@ struct Pcloud
   pcl::PointCloud<pcl::PointXYZ>::Ptr cut_plane;
   Eigen::Vector3d cut_position;
   Eigen::Vector3d cut_vector;
+  
+  // SUB SPACE POINTS
   vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> sub_space; // points contained in each sub-space
   map<int, pcl::PointCloud<pcl::PointXYZ>::Ptr> seg_clouds; // points contained in each segment, [seg_id, points]
+  
+
   double scale;
   Eigen::Vector3d center;
   vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> sub_space_scale; // points contained in each sub-space
@@ -122,6 +126,7 @@ struct Pcloud
   Eigen::MatrixXd vertices_scale;
   map<Eigen::Vector3d, int, Vector3dCompare> pt_seg_pair;
   map<int, double> inner_dist_set; // inner distance (avg) of each sub-segment-space (for viewpoints generation)
+  
   // Real scene scale skeleton graph
   Eigen::MatrixXd realVertices;
   Eigen::MatrixXd outputVertices;
@@ -142,10 +147,13 @@ public:
   }
 
   void init(ros::NodeHandle& nh);
+
   /* Function */
   void main();
+
   /* Data */
   Pcloud P;
+
   /* Param */
   bool visFlag;
   double groundHeight;
@@ -202,6 +210,7 @@ private:
   Eigen::Vector4d centroid;
   pcl::PointCloud<pcl::PointXYZ>::Ptr skeleton_ver_cloud;
   Eigen::MatrixXi adj_before_collapse;
+
   /* Utils */
   shared_ptr<PlanningVisualization> vis_utils_;
   int argmax_eigen(Eigen::MatrixXd &x);
@@ -215,6 +224,7 @@ private:
   bool prune(vector<int>& input_branch);
   double distance_point_line(Eigen::Vector3d& point, Eigen::Vector3d& line_pt, Eigen::Vector3d& line_dir);
   Eigen::Vector3d PCA(Eigen::MatrixXd& A);
+  
   /* Timer */
   ros::Timer vis_timer_;
 };
