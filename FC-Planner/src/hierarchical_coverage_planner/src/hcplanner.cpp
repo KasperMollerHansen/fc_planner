@@ -105,7 +105,7 @@ namespace predrecon
     pcl::PointXYZ vertex;
     for (int i = 0; i < (int)skeleton_operator->P.realVertices.rows(); ++i)
     {
-      cout << printf(points); //TRY PRINTING
+      printf(points); //TRY PRINTING
       vertex.x = skeleton_operator->P.realVertices(i, 0);
       vertex.y = skeleton_operator->P.realVertices(i, 1);
       vertex.z = skeleton_operator->P.realVertices(i, 2);
