@@ -173,7 +173,7 @@ namespace predrecon
       *PR.model += *tempSeg;
     }
 
-    for (auto i : PR.model->points) {
+    for (auto i : PR.model->points) { // ADDED
       cout << i << "\n";
     }
 
