@@ -89,10 +89,7 @@ if __name__ == "__main__":
         # Retrieve parameters from ROS
         axis_angle_tower = rospy.get_param("~axis_angle_tower", [0, 0, 0])
         axis_angle_blades = rospy.get_param("~axis_angle_blades", [0, 0, 0])
-
-        # Convert angles to radians
-        axis_angle_tower = [np.deg2rad(a) for a in axis_angle_tower]
-        axis_angle_blades = [np.deg2rad(a) for a in axis_angle_blades]
+        
     except NameError:
         axis_angle_tower = [0,0,180]
         axis_angle_blades = [60,0,0]
