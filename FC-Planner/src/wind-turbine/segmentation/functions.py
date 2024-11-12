@@ -33,6 +33,10 @@ class LoadData:
         pcd = self._read_point_cloud(src_path, path_from_src)
         return pcd
     
+    def save_point_cloud(self, path_from_src, pcd):
+        src_path = self._get_path_to_src()
+        o3d.io.write_point_cloud(src_path + path_from_src, pcd, write_ascii=True)
+    
 # %%
 class CenterWings:
     @staticmethod

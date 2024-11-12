@@ -17,7 +17,8 @@ class pcd_segmentation:
         self.CENTER_TOWER = self._determine_tower_center(self.tower)
 
     def _load_point_clouds(self):
-        self.wings = self.load_data.load_point_cloud("/wind-turbine/data/wings_gt_ds.pcd")
+        self.wings_old = self.load_data.load_point_cloud("/wind-turbine/data/wings_gt_ds.pcd")
+        self.wings = self.load_data.load_point_cloud("/wind-turbine/data/wings_new.pcd")
         self.tower = self.load_data.load_point_cloud("/wind-turbine/data/tower_gt_ds.pcd")
 
     def _determine_wing_center(self, pcd):
@@ -53,18 +54,33 @@ class pcd_segmentation:
         # Set the z-value of the center to the z-value of the lowest point
         center[2] = np.mean(sorted_points[0:10, 2])
         return center
+    
+    def _make_wings_even(self):
+        wings = []
+        for i in range(3):
+            wings_rot = self.rotate_pcd.rotate(self.CENTER_WINGS, self.wings, [np.deg2rad(120*i),0,0])
+            wings.append(wings_rot)
+        wings_new = wings[0] + wings[1] + wings[2]
+        wings_new = wings_new.uniform_down_sample(3)
+        self.load_data.save_point_cloud("/wind-turbine/data/wings_new.pcd",wings_new)
+
 
     def main(self, axis_angle_tower, axis_angle_blades):
         wings_rot = self.rotate_pcd.rotate(self.CENTER_WINGS, self.wings, np.array(axis_angle_blades))
         wings_rot = self.rotate_pcd.rotate(self.CENTER_TOWER, wings_rot, np.array(axis_angle_tower))
         tower_rot = self.rotate_pcd.rotate(self.CENTER_TOWER, self.tower, np.array(axis_angle_tower))
-        o3d.visualization.draw_geometries([tower_rot,wings_rot])
+
+        wind_turbine_rotated = wings_rot + tower_rot
+        self.load_data.save_point_cloud("/wind-turbine/data/wind_turbine_rotated.pcd",wind_turbine_rotated)
+
+        # Add the tower 
 # %%
 if __name__ == "__main__":
     seg = pcd_segmentation()
     axis_angle_tower = [0,0,np.deg2rad(180)]
-    axis_angle = [np.deg2rad(30),0,0]
-    seg.main(axis_angle_tower=axis_angle_tower, axis_angle_blades=axis_angle)
+    axis_angle_blades = [np.deg2rad(60),0,0]
+    seg.main(axis_angle_tower=axis_angle_tower, axis_angle_blades=axis_angle_blades)
+
 
 
 # %%
