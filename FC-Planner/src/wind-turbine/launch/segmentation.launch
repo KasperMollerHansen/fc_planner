@@ -3,7 +3,7 @@
     <arg name="tower_angle" default="0" />
     <arg name="blade_angle" default="0" />
 
-    <node name="pcd_segmentation" pkg="wind_turbine_pcd" type="pcd_segmentation.py" output="screen">
+    <node name="pcd_segmentation" pkg="wind-turbine" type="segmentation.py" output="screen">
         <!-- Set parameters using the arguments -->
         <param name="axis_angle_tower" value="[0, 0, $(arg tower_angle)]" />
         <param name="axis_angle_blades" value="[$(arg blade_angle), 0, 0]" />
