@@ -31,6 +31,7 @@ RUN python3 -m pip install --upgrade --ignore-installed pyyaml
 
 # Install Open3D using the new Python 3.10 pip with --ignore-installed option
 RUN python3 -m pip install --no-cache-dir --ignore-installed open3d
+RUN python3 -m pip install --no-cache-dir netifaces
 
 RUN apt-get update && apt-get upgrade -y
     
