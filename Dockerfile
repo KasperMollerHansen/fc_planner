@@ -1,6 +1,8 @@
 # Start with ROS Noetic Desktop Full
 FROM osrf/ros:noetic-desktop-full
 
+RUN echo "Docker Build"
+
 RUN apt-get update && apt-get upgrade -y
 
 # Install dependencies
