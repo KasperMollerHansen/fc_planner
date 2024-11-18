@@ -44,6 +44,11 @@ class LoadData:
         src_path = self._get_path_to_src()
         o3d.io.write_point_cloud(src_path + path_from_src, pcd, write_ascii=True)
     
+    def clear_rotated_folder(self):
+        src_path = self._get_path_to_src()
+        path = src_path + "/wind-turbine/data/rotated/"
+        for file in os.listdir(path):
+            os.remove(path + file)
 # %%
 class CenterWings:
     @staticmethod
@@ -156,6 +161,7 @@ class pcd_segmentation:
         self._load_point_clouds()
         self.CENTER_WINGS = self._determine_wing_center(self.wings)
         self.CENTER_TOWER = self._determine_tower_center(self.tower)
+        self._make_wings_even() # Save in wings_new.pcd
 
     def _load_point_clouds(self):
         self.wings_old = self.load_data.load_point_cloud("/wind-turbine/data/wings_gt_dsx5.pcd")
@@ -217,6 +223,9 @@ class pcd_segmentation:
         tower_rot = self.rotate_pcd.rotate(self.CENTER_TOWER, self.tower, np.array(axis_angle_tower))
 
         wind_turbine_rotated = wings_rot + tower_rot
+
+        self.load_data.clear_rotated_folder()
+        # Save the rotated point clouds
         self.load_data.save_point_cloud("/wind-turbine/data/rotated/tower.pcd", tower_rot)
         self.load_data.save_point_cloud("/wind-turbine/data/rotated/wings.pcd", wings_rot)
         self.load_data.save_point_cloud("/wind-turbine/data/rotated/wind_turbine.pcd", wind_turbine_rotated)
@@ -246,8 +255,6 @@ if __name__ == "__main__":
     axis_angle_blades = [np.deg2rad(a) for a in axis_angle_blades]
     seg = pcd_segmentation()
     seg.main(axis_angle_tower=axis_angle_tower, axis_angle_blades=axis_angle_blades)
-    seg._make_wings_even()
-
 
 
 # %%
