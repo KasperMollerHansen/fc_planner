@@ -19,7 +19,9 @@ RUN apt-get install -y \
     ros-noetic-openni-launch \
     ros-noetic-openni2-launch \
     nano \
-    ccache
+    ccache \
+    gnupg2 
+
 
 RUN rosdep update 
 
