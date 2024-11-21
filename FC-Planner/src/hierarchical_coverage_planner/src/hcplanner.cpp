@@ -741,7 +741,7 @@ namespace predrecon
 
     vector<SingleViewpoint> updated_vps;
     viewpoint_manager_->reset();
-    viewpoint_manager_->setMapPointCloud(PR.occ_model);
+    viewpoint_manager_->setMapPointCloud(PR.occ_model); // Blade model?
     viewpoint_manager_->setModel(PR.model);
     viewpoint_manager_->setNormals(PR.pt_normal_pairs);
     viewpoint_manager_->setInitViewpoints(all_safe_normal_vps);
