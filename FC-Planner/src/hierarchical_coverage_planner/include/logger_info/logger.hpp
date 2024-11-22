@@ -30,7 +30,7 @@
 #include <chrono>
 #include <ctime>
 #include <stdexcept>
-#include <cpuid.h>
+// #include <cpuid.h>
 #include <cstdio>
 #include <memory>
 #include <iomanip>
@@ -48,21 +48,22 @@ namespace logger_info
         return std::ctime(&now_c);
     }
     
-    inline std::string get_cpu_model()
-    {
-        std::array<unsigned int, 4> cpui;
-        std::string cpu_info;
+    // Comment the following line for aarch64 system. Who needs this?
+    // inline std::string get_cpu_model()
+    // {
+    //     std::array<unsigned int, 4> cpui;
+    //     std::string cpu_info;
 
-        for (int i = 0x80000002; i <= 0x80000004; ++i) {
-            __get_cpuid(i, &cpui[0], &cpui[1], &cpui[2], &cpui[3]);
-            cpu_info += std::string((char*)&cpui[0], 4);
-            cpu_info += std::string((char*)&cpui[1], 4);
-            cpu_info += std::string((char*)&cpui[2], 4);
-            cpu_info += std::string((char*)&cpui[3], 4);
-        }
+    //     for (int i = 0x80000002; i <= 0x80000004; ++i) {
+    //         __get_cpuid(i, &cpui[0], &cpui[1], &cpui[2], &cpui[3]);
+    //         cpu_info += std::string((char*)&cpui[0], 4);
+    //         cpu_info += std::string((char*)&cpui[1], 4);
+    //         cpu_info += std::string((char*)&cpui[2], 4);
+    //         cpu_info += std::string((char*)&cpui[3], 4);
+    //     }
 
-        return cpu_info;
-    }
+    //     return cpu_info;
+    // }
 
     inline std::string get_memory_info() 
     {
@@ -156,7 +157,7 @@ namespace logger_info
         std::cout << "Project        : " << "FC-Planner" << std::endl;
         std::cout << "Author         : " << "Chen Feng" << std::endl;
         std::cout << "Current Time   : " << get_current_time();
-        std::cout << "CPU Info       : " << get_cpu_model() << std::endl;
+        // std::cout << "CPU Info       : " << get_cpu_model() << std::endl;
         std::cout << "RAM Info       : " << get_memory_info() << std::endl;
         std::cout << "OS Info        : " << get_os_info() << std::endl;
         std::cout << "GCC Version    : " << get_gcc_version() << std::endl;

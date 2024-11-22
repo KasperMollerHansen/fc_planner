@@ -1,9 +1,0 @@
-viewpoint_manager
-/fc_planner/FC-Planner/devel/.private/viewpoint_manager/cmake.lock /fc_planner/FC-Planner/devel/./cmake.lock
-/fc_planner/FC-Planner/devel/.private/viewpoint_manager/share/viewpoint_manager/cmake/viewpoint_managerConfig-version.cmake /fc_planner/FC-Planner/devel/share/viewpoint_manager/cmake/viewpoint_managerConfig-version.cmake
-/fc_planner/FC-Planner/devel/.private/viewpoint_manager/share/viewpoint_manager/cmake/viewpoint_managerConfig.cmake /fc_planner/FC-Planner/devel/share/viewpoint_manager/cmake/viewpoint_managerConfig.cmake
-/fc_planner/FC-Planner/devel/.private/viewpoint_manager/lib/libviewpoint_manager.so /fc_planner/FC-Planner/devel/lib/libviewpoint_manager.so
-/fc_planner/FC-Planner/devel/.private/viewpoint_manager/lib/libskeleton_viewpoint.so /fc_planner/FC-Planner/devel/lib/libskeleton_viewpoint.so
-/fc_planner/FC-Planner/devel/.private/viewpoint_manager/lib/pkgconfig/viewpoint_manager.pc /fc_planner/FC-Planner/devel/lib/pkgconfig/viewpoint_manager.pc
-/fc_planner/FC-Planner/devel/.private/viewpoint_manager/lib/viewpoint_manager/viewpoint_manager_node /fc_planner/FC-Planner/devel/lib/viewpoint_manager/viewpoint_manager_node
-/fc_planner/FC-Planner/devel/.private/viewpoint_manager/lib/viewpoint_manager/skeleton_viewpoint_node /fc_planner/FC-Planner/devel/lib/viewpoint_manager/skeleton_viewpoint_node

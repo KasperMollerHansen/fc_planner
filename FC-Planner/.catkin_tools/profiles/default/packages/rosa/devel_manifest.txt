@@ -1,7 +1,0 @@
-rosa
-/fc_planner/FC-Planner/devel/.private/rosa/cmake.lock /fc_planner/FC-Planner/devel/./cmake.lock
-/fc_planner/FC-Planner/devel/.private/rosa/share/rosa/cmake/rosaConfig.cmake /fc_planner/FC-Planner/devel/share/rosa/cmake/rosaConfig.cmake
-/fc_planner/FC-Planner/devel/.private/rosa/share/rosa/cmake/rosaConfig-version.cmake /fc_planner/FC-Planner/devel/share/rosa/cmake/rosaConfig-version.cmake
-/fc_planner/FC-Planner/devel/.private/rosa/lib/librosa.so /fc_planner/FC-Planner/devel/lib/librosa.so
-/fc_planner/FC-Planner/devel/.private/rosa/lib/rosa/rosa_exec /fc_planner/FC-Planner/devel/lib/rosa/rosa_exec
-/fc_planner/FC-Planner/devel/.private/rosa/lib/pkgconfig/rosa.pc /fc_planner/FC-Planner/devel/lib/pkgconfig/rosa.pc

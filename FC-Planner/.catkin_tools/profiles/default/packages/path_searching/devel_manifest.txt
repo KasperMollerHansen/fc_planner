@@ -1,6 +1,0 @@
-path_searching
-/fc_planner/FC-Planner/devel/.private/path_searching/cmake.lock /fc_planner/FC-Planner/devel/./cmake.lock
-/fc_planner/FC-Planner/devel/.private/path_searching/share/path_searching/cmake/path_searchingConfig.cmake /fc_planner/FC-Planner/devel/share/path_searching/cmake/path_searchingConfig.cmake
-/fc_planner/FC-Planner/devel/.private/path_searching/share/path_searching/cmake/path_searchingConfig-version.cmake /fc_planner/FC-Planner/devel/share/path_searching/cmake/path_searchingConfig-version.cmake
-/fc_planner/FC-Planner/devel/.private/path_searching/lib/libpath_searching.so /fc_planner/FC-Planner/devel/lib/libpath_searching.so
-/fc_planner/FC-Planner/devel/.private/path_searching/lib/pkgconfig/path_searching.pc /fc_planner/FC-Planner/devel/lib/pkgconfig/path_searching.pc

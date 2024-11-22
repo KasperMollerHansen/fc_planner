@@ -44,6 +44,7 @@ add_library( viewpoint_manager
 target_link_libraries( viewpoint_manager
     ${catkin_LIBRARIES} 
     ${PCL_LIBRARIES}
+    ${OpenCV_LIBS}
     )  
 
 add_library( skeleton_viewpoint
@@ -53,6 +54,7 @@ add_library( skeleton_viewpoint
 target_link_libraries( viewpoint_manager
     ${catkin_LIBRARIES} 
     ${PCL_LIBRARIES}
+    ${OpenCV_LIBS}
     )  
 
 # viewpoint_manager_node
@@ -64,6 +66,7 @@ target_link_libraries(viewpoint_manager_node
     viewpoint_manager
     ${catkin_LIBRARIES}
     ${PCL_LIBRARIES}
+    ${OpenCV_LIBS}
     )
 
 # skeleton_viewpoint_node
@@ -78,4 +81,5 @@ target_link_libraries(skeleton_viewpoint_node
     viewpoint_manager
     ${catkin_LIBRARIES}
     ${PCL_LIBRARIES}
+    ${OpenCV_LIBS}
     )
