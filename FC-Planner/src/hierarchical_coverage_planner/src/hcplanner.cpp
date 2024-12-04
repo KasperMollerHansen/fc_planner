@@ -78,15 +78,6 @@ namespace predrecon
 
     // * Evaluation
     nh.param("hcplanner/fullcloud", fullcloud, string("null"));
-    nh.param("hcplanner/bladecloud", bladecloud, string("null")); //ADDED
-    Blademodel.reset(new pcl::PointCloud<pcl::PointXYZ>); // ADDED
-
-    PR.blade_model.reset(new pcl::PointCloud<pcl::PointXYZ>); // ADDED
-    pcl::io::loadPCDFile<pcl::PointXYZ>(bladecloud, *PR.blade_model); // ADDED
-
-    for (auto i : PR.blade_model->points) { // ADDED
-      cout << i << "\n";
-    } // WORKS
 
     Fullmodel.reset(new pcl::PointCloud<pcl::PointXYZ>);
     visibleFullmodel.reset(new pcl::PointCloud<pcl::PointXYZ>);
@@ -171,10 +162,6 @@ namespace predrecon
           tempSeg->points.push_back(seg_cloud.second->points[i]);
       }
       *PR.model += *tempSeg;
-    }
-
-    for (auto i : PR.model->points) { // ADDED
-      cout << i << "\n";
     }
 
     ROS_INFO("\033[33m[Planner] input points size = %d. \033[32m", (int)PR.model->points.size());
@@ -782,6 +769,7 @@ namespace predrecon
       if (!final_vp.sub_id == 0) {
         PR.vps_set_.push_back(final_vp);
       }
+
     }
   }
 
