@@ -341,7 +341,6 @@ namespace predrecon
     }
   }
 
-
   void hierarchical_coverage_planner::CoveragePlan(bool turn)
   {
     auto cpt_t1 = std::chrono::high_resolution_clock::now();
@@ -778,7 +777,11 @@ namespace predrecon
         if (vp_search_sub_.find(NearestVec) != vp_search_sub_.end())
           final_vp.sub_id = vp_search_sub_.find(NearestVec)->second;
       }
-      PR.vps_set_.push_back(final_vp);
+      
+      // OBS ADDED
+      if (!final_vp.sub_id == 0) {
+        PR.vps_set_.push_back(final_vp);
+      }
     }
   }
 
