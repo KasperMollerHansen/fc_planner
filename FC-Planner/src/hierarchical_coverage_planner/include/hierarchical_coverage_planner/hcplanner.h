@@ -182,9 +182,7 @@ public:
 
   /* Evaluation */
   string fullcloud;
-  string bladecloud; //ADDED
   pcl::PointCloud<pcl::PointXYZ>::Ptr Fullmodel;
-  pcl::PointCloud<pcl::PointXYZ>::Ptr Blademodel;
   pcl::PointCloud<pcl::PointXYZ>::Ptr visibleFullmodel;
 
   string bladecloud; // ADDED

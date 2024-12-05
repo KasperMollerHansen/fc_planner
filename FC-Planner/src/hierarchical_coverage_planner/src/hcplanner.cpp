@@ -86,7 +86,7 @@ namespace predrecon
     PR.occ_model.reset(new pcl::PointCloud<pcl::PointXYZ>); // Creating new point cloud object
     pcl::io::loadPCDFile<pcl::PointXYZ>(fullcloud, *PR.occ_model); // Load .pcd file into pcl object (occ_model)
 
-    PR.test_model.reset(new pcl::PointCloud<pcl::PointXYZ);
+    PR.test_model.reset(new pcl::PointCloud<pcl::PointXYZ>);
     pcl:io::loadPCDFile<pcl::PointXYZ>(bladecloud, *PR.test_model);
 
 
