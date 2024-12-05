@@ -112,7 +112,13 @@ struct PathResult
   pcl::PointCloud<pcl::PointXYZ>::Ptr ori_model;
   pcl::PointCloud<pcl::PointXYZ>::Ptr occ_model;
   pcl::PointCloud<pcl::PointXYZ>::Ptr model;
-  pcl::PointCloud<pcl::PointXYZ>::Ptr blade_model; // ADDED
+
+
+  pcl::PointCloud<pcl::PointXYZ>::Ptr test_model;
+  pcl::PointCloud<pcl::PointXYZ>::Ptr test_model_ds;
+  map<int, pcl::PointCloud<pcl::PointXYZ>::Ptr> blades;
+  map<Eigen::Vector3d, Eigen::Vector3d, Vector3dCompare> blades_pt_normal_pairs;
+
   
   map<int, pcl::PointCloud<pcl::PointXYZ>::Ptr> sub_vps_inflate;
   map<int, Eigen::MatrixXd> sub_vps_pose;
@@ -176,7 +182,9 @@ public:
 
   /* Evaluation */
   string fullcloud;
+  string bladecloud; //ADDED
   pcl::PointCloud<pcl::PointXYZ>::Ptr Fullmodel;
+  pcl::PointCloud<pcl::PointXYZ>::Ptr Blademodel;
   pcl::PointCloud<pcl::PointXYZ>::Ptr visibleFullmodel;
 
   string bladecloud; // ADDED

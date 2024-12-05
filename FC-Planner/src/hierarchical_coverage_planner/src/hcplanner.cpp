@@ -78,11 +78,16 @@ namespace predrecon
 
     // * Evaluation
     nh.param("hcplanner/fullcloud", fullcloud, string("null"));
+    nh.param("hcplanner/fullcloud", bladecloud, string("null"));
 
     Fullmodel.reset(new pcl::PointCloud<pcl::PointXYZ>);
+    Blademodel.reset(new pcl::PointCloud<pcl::PointXYZ>);
     visibleFullmodel.reset(new pcl::PointCloud<pcl::PointXYZ>);
     PR.occ_model.reset(new pcl::PointCloud<pcl::PointXYZ>); // Creating new point cloud object
     pcl::io::loadPCDFile<pcl::PointXYZ>(fullcloud, *PR.occ_model); // Load .pcd file into pcl object (occ_model)
+
+    PR.test_model.reset(new pcl::PointCloud<pcl::PointXYZ);
+    pcl:io::loadPCDFile<pcl::PointXYZ>(bladecloud, *PR.test_model);
 
 
     // * Mapping & Solver & Bidirectional Ray Casting (BiRC)
@@ -163,6 +168,95 @@ namespace predrecon
       }
       *PR.model += *tempSeg;
     }
+
+    /*  TEST  */
+    /* Downsampling Blade Model */
+    std::cout << "Blade Model size: " << PR.test_model->points.size() << std::endl;
+    pcl::VoxelGrid<pcl::PointXYZ> test_ds;
+    test_ds.setInputCloud(PR.test_model);
+    // test_ds.setLeafSize(model_ds_size, model_ds_size, model_ds_size);
+    test_ds.setLeafSize(1, 1, 1);
+    test_ds.filter(*PR.test_model_ds);
+    std::cout << "Downsampled Blade Model: " << PR.test_model_ds->points.size() << std::endl;
+    
+    /* Comput Center of Mass */
+    Eigen::Vector3d com;
+    double xm, ym, zm = 0.0;
+    for (const auto p : PR.test_model_ds->points) {
+        xm += p.x;
+        ym += p.y;
+        zm += p.z;
+    }
+    int test_model_ds_size = PR.test_model_ds->points.size();
+    com << xm / test_model_ds_size, ym / test_model_ds_size, zm / test_model_ds_size;
+    std::cout << "Blade center of mass: " << com[0] << " " << com[1] << " " << com[2] << std::endl;
+    
+    /* Blade grouping */
+    pcl::PointXYZ centroid;
+    centroid.x = com[0], centroid.y = com[1], centroid.z = com[2];
+
+    // Initialize point clouds
+    for (int i = 0; i < 3; ++i) {
+        PR.blades[i].reset(new pcl::PointCloud<pcl::PointXYZ>());
+    }
+
+    // blade segmentation
+    for (const auto& p : PR.test_model_ds->points) {
+        double dx = p.x - centroid.x;
+        double dy = p.y - centroid.y;
+        double angle = std::atan2(dy,dx) * 180 / M_PI;
+        angle += 60;
+        if (angle < 0) angle += 360;
+
+        int group = static_cast<int>(angle / 120.0);
+        PR.blades[group]->points.push_back(p);
+    }
+
+    /* Distance from CoM */
+    struct PointWithDistance {
+        pcl::PointXYZ point;
+        double distance;
+    };
+
+    for (auto blade_seg : PR.blades) {
+        double max_dist = -1.0;
+        Eigen::Vector3d tip_pt;
+        for (auto p : blade_seg.second->points) {
+            double dist = std::sqrt(std::pow(p.x - com[0],2) 
+                        + std::pow(p.y - com[1],2) 
+                        + std::pow(p.z - com[2],2));
+            if (dist > max_dist) {
+                max_dist = dist;
+                tip_pt << p.x, p.y, p.z;
+            }
+        }
+
+        Eigen::Vector3d blade_dir;
+        double blade_len;
+        std::vector<Eigen::Vector3d> projs;
+
+        blade_dir = (com - tip_pt).normalized();
+        blade_len = (com - tip_pt).norm();
+        for (int i=0; normal_step*i < blade_len; i++){
+            Eigen::Vector3d blade_proj;
+            blade_proj = com + normal_step * i * blade_dir;
+            projs.push_back(blade_proj);
+        }
+
+        /* Plane Query */
+        for (auto blade_proj_point : projs) {
+            Eigen::Vector3d blade_pt_vec, blade_pt_normal;
+            for (int i=0; i<(int)blade_seg.second->points.size(); i++) {
+                blade_pt_vec << blade_seg.second->points[i].x,blade_seg.second->points[i].y,blade_seg.second->points[i].z;
+                double dist_from_plane = (blade_pt_vec - blade_proj_point).dot(blade_dir);
+                if (std::abs(dist_from_plane <= 1*normal_step)) {
+                    PR.blades_pt_normal_pairs[blade_pt_vec] = blade_pt_normal;
+                }
+            }
+        }
+    }
+    
+    /*  TEST  */
 
     ROS_INFO("\033[33m[Planner] input points size = %d. \033[32m", (int)PR.model->points.size());
     model_tree.setInputCloud(PR.model);
@@ -728,8 +822,10 @@ namespace predrecon
     vector<SingleViewpoint> updated_vps;
     viewpoint_manager_->reset();
     viewpoint_manager_->setMapPointCloud(PR.occ_model); // Blade model?
-    viewpoint_manager_->setModel(PR.model);
-    viewpoint_manager_->setNormals(PR.pt_normal_pairs);
+    // viewpoint_manager_->setModel(PR.model);
+    viewpoint_manager_->setModel(PR.test_model);
+    viewpoint_manager_->setNormals(PR.blades_pt_normal_pairs);
+    // viewpoint_manager_->setNormals(PR.pt_normal_pairs);
     viewpoint_manager_->setInitViewpoints(all_safe_normal_vps);
     viewpoint_manager_->updateViewpoints();
     viewpoint_manager_->getUpdatedViewpoints(updated_vps);
@@ -763,11 +859,6 @@ namespace predrecon
         NearestVec(2) = basic_vps->points[nearest[0]].z;
         if (vp_search_sub_.find(NearestVec) != vp_search_sub_.end())
           final_vp.sub_id = vp_search_sub_.find(NearestVec)->second;
-      }
-      
-      // OBS ADDED
-      if (!final_vp.sub_id == 0) {
-        PR.vps_set_.push_back(final_vp);
       }
 
     }
