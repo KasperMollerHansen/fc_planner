@@ -78,11 +78,12 @@ namespace predrecon
 
     // * Evaluation
     nh.param("hcplanner/fullcloud", fullcloud, string("null"));
-    nh.param("hcplanner/fullcloud", bladecloud, string("null"));
+    nh.param("hcplanner/bladecloud", bladecloud, string("null"));
 
     Fullmodel.reset(new pcl::PointCloud<pcl::PointXYZ>);
     Blademodel.reset(new pcl::PointCloud<pcl::PointXYZ>);
     visibleFullmodel.reset(new pcl::PointCloud<pcl::PointXYZ>);
+
     PR.occ_model.reset(new pcl::PointCloud<pcl::PointXYZ>); // Creating new point cloud object
     pcl::io::loadPCDFile<pcl::PointXYZ>(fullcloud, *PR.occ_model); // Load .pcd file into pcl object (occ_model)
 
