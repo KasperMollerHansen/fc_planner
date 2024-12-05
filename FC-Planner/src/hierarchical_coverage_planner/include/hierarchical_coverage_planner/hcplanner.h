@@ -117,7 +117,7 @@ struct PathResult
   pcl::PointCloud<pcl::PointXYZ>::Ptr test_model;
   pcl::PointCloud<pcl::PointXYZ>::Ptr test_model_ds;
   map<int, pcl::PointCloud<pcl::PointXYZ>::Ptr> blades;
-  map<Eigen::Vector3d, Eigen::Vector3d, Vector3dCompare> blades_pt_normal_pairs;
+  map<Eigen::Vector3d, Eigen::Vector3d, Vector3dCompare0> blades_pt_normal_pairs;
 
   
   map<int, pcl::PointCloud<pcl::PointXYZ>::Ptr> sub_vps_inflate;
