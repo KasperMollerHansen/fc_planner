@@ -90,6 +90,7 @@ namespace predrecon
     PR.test_model.reset(new pcl::PointCloud<pcl::PointXYZ>);
     pcl::io::loadPCDFile<pcl::PointXYZ>(bladecloud, *PR.test_model);
 
+    PR.test_model_ds.reset(new pcl::PointCloud<pcl::PointXYZ>);
 
     // * Mapping & Solver & Bidirectional Ray Casting (BiRC)
     HCMap->initHCMap(nh, PR.occ_model);
@@ -175,7 +176,6 @@ namespace predrecon
     std::cout << "Blade Model size: " << PR.test_model->points.size() << std::endl;
     pcl::VoxelGrid<pcl::PointXYZ> test_ds;
     test_ds.setInputCloud(PR.test_model);
-    // test_ds.setLeafSize(model_ds_size, model_ds_size, model_ds_size);
     test_ds.setLeafSize(1, 1, 1);
     test_ds.filter(*PR.test_model_ds);
     std::cout << "Downsampled Blade Model: " << PR.test_model_ds->points.size() << std::endl;
