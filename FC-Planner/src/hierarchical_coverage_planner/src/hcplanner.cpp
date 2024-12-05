@@ -863,7 +863,7 @@ namespace predrecon
         if (vp_search_sub_.find(NearestVec) != vp_search_sub_.end())
           final_vp.sub_id = vp_search_sub_.find(NearestVec)->second;
       }
-
+    PR.vps_set_.push_back(final_vp);
     }
   }
 
