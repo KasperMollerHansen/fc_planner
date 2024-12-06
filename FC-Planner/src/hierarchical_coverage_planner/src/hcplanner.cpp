@@ -87,10 +87,10 @@ namespace predrecon
     PR.occ_model.reset(new pcl::PointCloud<pcl::PointXYZ>); // Creating new point cloud object
     pcl::io::loadPCDFile<pcl::PointXYZ>(fullcloud, *PR.occ_model); // Load .pcd file into pcl object (occ_model)
 
-    PR.test_model.reset(new pcl::PointCloud<pcl::PointXYZ>);
-    pcl::io::loadPCDFile<pcl::PointXYZ>(bladecloud, *PR.test_model);
+    PR.blades_model.reset(new pcl::PointCloud<pcl::PointXYZ>);
+    pcl::io::loadPCDFile<pcl::PointXYZ>(bladecloud, *PR.blades_model);
 
-    PR.test_model_ds.reset(new pcl::PointCloud<pcl::PointXYZ>);
+    PR.blades_model_ds.reset(new pcl::PointCloud<pcl::PointXYZ>);
 
     // * Mapping & Solver & Bidirectional Ray Casting (BiRC)
     HCMap->initHCMap(nh, PR.occ_model);
@@ -173,23 +173,23 @@ namespace predrecon
 
     /*  TEST  */
     /* Downsampling Blade Model */
-    std::cout << "Blade Model size: " << PR.test_model->points.size() << std::endl;
-    pcl::VoxelGrid<pcl::PointXYZ> test_ds;
-    test_ds.setInputCloud(PR.test_model);
-    test_ds.setLeafSize(1, 1, 1);
-    test_ds.filter(*PR.test_model_ds);
-    std::cout << "Downsampled Blade Model: " << PR.test_model_ds->points.size() << std::endl;
+    std::cout << "Blade Model size: " << PR.blades_model->points.size() << std::endl;
+    pcl::VoxelGrid<pcl::PointXYZ> blade_ds;
+    blade_ds.setInputCloud(PR.blades_model);
+    blade_ds.setLeafSize(1, 1, 1);
+    blade_ds.filter(*PR.blades_model_ds);
+    std::cout << "Downsampled Blade Model: " << PR.blades_model_ds->points.size() << std::endl;
     
     /* Comput Center of Mass */
     Eigen::Vector3d com;
     double xm, ym, zm = 0.0;
-    for (const auto p : PR.test_model_ds->points) {
+    for (const auto p : PR.blades_model_ds->points) {
         xm += p.x;
         ym += p.y;
         zm += p.z;
     }
-    int test_model_ds_size = PR.test_model_ds->points.size();
-    com << xm / test_model_ds_size, ym / test_model_ds_size, zm / test_model_ds_size;
+    int blades_model_ds_size = PR.blades_model_ds->points.size();
+    com << xm / blades_model_ds_size, ym / blades_model_ds_size, zm / blades_model_ds_size;
     std::cout << "Blade center of mass: " << com[0] << " " << com[1] << " " << com[2] << std::endl;
     
     /* Blade grouping */
@@ -202,7 +202,7 @@ namespace predrecon
     }
 
     // blade segmentation
-    for (const auto& p : PR.test_model_ds->points) {
+    for (const auto& p : PR.blades_model_ds->points) {
         double dx = p.x - centroid.x;
         double dy = p.y - centroid.y;
         double angle = std::atan2(dy,dx) * 180 / M_PI;
@@ -253,6 +253,28 @@ namespace predrecon
                 if (std::abs(dist_from_plane <= 1*normal_step)) {
                     PR.blades_pt_normal_pairs[blade_pt_vec] = blade_pt_normal;
                 }
+            }
+        }
+        std::vector<bool> blade_seg_visited;
+        blade_seg_visited.clear();
+        blade_seg_visited.resize(blade_seg.second->points.size(), false);
+
+        Eigen::Vector3d blade_remain_normal;
+        for (int i = 0; i < (int)blade_seg_visited.size(); i++) {
+            Eigen::Vector3d blade_remain_pt;
+            double dist = 0.0, dist_min = 100000.0;
+            int distri_id = -1;
+            if (blade_seg_visited[i] == false) {
+                blade_remain_pt << blade_seg.second->points[i].x, blade_seg.second->points[i].y, blade_seg.second->points[i].z;
+                for (int k = 0; k < (int)projs.size(); k++) {
+                    dist = (projs[k] - blade_remain_pt).norm();
+                    if (dist < dist_min) {
+                        dist_min = dist;
+                        distri_id = k;
+                    }
+                }
+                blade_remain_normal = (blade_remain_pt - projs[distri_id]).normalized();
+                PR.blades_pt_normal_pairs[blade_remain_pt] = blade_remain_normal;
             }
         }
     }
@@ -825,7 +847,7 @@ namespace predrecon
     viewpoint_manager_->setMapPointCloud(PR.occ_model);
 
     // viewpoint_manager_->setModel(PR.model);
-    viewpoint_manager_->setModel(PR.test_model);
+    viewpoint_manager_->setModel(PR.blades_model);
     // viewpoint_manager_->setNormals(PR.pt_normal_pairs);
     viewpoint_manager_->setNormals(PR.blades_pt_normal_pairs);
     

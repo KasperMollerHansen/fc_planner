@@ -114,8 +114,8 @@ struct PathResult
   pcl::PointCloud<pcl::PointXYZ>::Ptr model;
 
 
-  pcl::PointCloud<pcl::PointXYZ>::Ptr test_model;
-  pcl::PointCloud<pcl::PointXYZ>::Ptr test_model_ds;
+  pcl::PointCloud<pcl::PointXYZ>::Ptr blades_model;
+  pcl::PointCloud<pcl::PointXYZ>::Ptr blades_model_ds;
   map<int, pcl::PointCloud<pcl::PointXYZ>::Ptr> blades;
   map<Eigen::Vector3d, Eigen::Vector3d, Vector3dCompare0> blades_pt_normal_pairs;
 
