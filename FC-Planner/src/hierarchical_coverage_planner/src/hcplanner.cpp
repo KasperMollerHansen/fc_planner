@@ -207,8 +207,8 @@ namespace predrecon
 
     // blade segmentation
     for (const auto& p : PR.blades_model_ds->points) {
-        double dx = p.z - centroid.z;
         double dy = p.y - centroid.y;
+        double dz = p.z - centroid.z;
         double angle = std::atan2(dy,dz) * 180 / M_PI;
         angle += 60;
         if (angle < 0) angle += 360;
