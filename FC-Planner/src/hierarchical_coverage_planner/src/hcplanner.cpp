@@ -171,7 +171,10 @@ namespace predrecon
       *PR.model += *tempSeg;
     }
 
-    /*  TEST  */
+
+
+    /*  ------------------------------ TEST ------------------------------  */
+
     /* Downsampling Blade Model */
     std::cout << "Blade Model size: " << PR.blades_model->points.size() << std::endl;
     pcl::VoxelGrid<pcl::PointXYZ> blade_ds;
@@ -180,7 +183,7 @@ namespace predrecon
     blade_ds.filter(*PR.blades_model_ds);
     std::cout << "Downsampled Blade Model: " << PR.blades_model_ds->points.size() << std::endl;
     
-    /* Comput Center of Mass */
+    /* Compute Center of Mass */
     Eigen::Vector3d com;
     double xm, ym, zm = 0.0;
     for (const auto p : PR.blades_model_ds->points) {
@@ -188,6 +191,7 @@ namespace predrecon
         ym += p.y;
         zm += p.z;
     }
+    
     int blades_model_ds_size = PR.blades_model_ds->points.size();
     com << xm / blades_model_ds_size, ym / blades_model_ds_size, zm / blades_model_ds_size;
     std::cout << "Blade center of mass: " << com[0] << " " << com[1] << " " << com[2] << std::endl;
@@ -203,9 +207,9 @@ namespace predrecon
 
     // blade segmentation
     for (const auto& p : PR.blades_model_ds->points) {
-        double dx = p.x - centroid.x;
+        double dx = p.z - centroid.z;
         double dy = p.y - centroid.y;
-        double angle = std::atan2(dy,dx) * 180 / M_PI;
+        double angle = std::atan2(dy,dz) * 180 / M_PI;
         angle += 60;
         if (angle < 0) angle += 360;
 
@@ -219,6 +223,7 @@ namespace predrecon
         double distance;
     };
 
+    // For each blade find tip point
     for (auto blade_seg : PR.blades) {
         double max_dist = -1.0;
         Eigen::Vector3d tip_pt;
@@ -236,8 +241,10 @@ namespace predrecon
         double blade_len;
         std::vector<Eigen::Vector3d> projs;
 
-        blade_dir = (com - tip_pt).normalized();
-        blade_len = (com - tip_pt).norm();
+        blade_dir = (com - tip_pt).normalized(); // Direction vector of blade
+        blade_len = (com - tip_pt).norm(); // Distance from tip to CoM
+
+        // Generate projection points along blade skeleton
         for (int i=0; normal_step*i < blade_len; i++){
             Eigen::Vector3d blade_proj;
             blade_proj = com + normal_step * i * blade_dir;
@@ -248,13 +255,16 @@ namespace predrecon
         for (auto blade_proj_point : projs) {
             Eigen::Vector3d blade_pt_vec, blade_pt_normal;
             for (int i=0; i<(int)blade_seg.second->points.size(); i++) {
-                blade_pt_vec << blade_seg.second->points[i].x,blade_seg.second->points[i].y,blade_seg.second->points[i].z;
+                blade_pt_vec << blade_seg.second->points[i].x, blade_seg.second->points[i].y, blade_seg.second->points[i].z;
                 double dist_from_plane = (blade_pt_vec - blade_proj_point).dot(blade_dir);
-                if (std::abs(dist_from_plane <= 1*normal_step)) {
+                double thickness = 0.5 * normal_step;
+
+                if (std::abs(dist_from_plane <= thickness)) {
                     PR.blades_pt_normal_pairs[blade_pt_vec] = blade_pt_normal;
                 }
             }
         }
+
         std::vector<bool> blade_seg_visited;
         blade_seg_visited.clear();
         blade_seg_visited.resize(blade_seg.second->points.size(), false);
@@ -279,7 +289,11 @@ namespace predrecon
         }
     }
     
-    /*  TEST  */
+    /* ------------------------------ TEST ------------------------------ */
+
+
+
+
 
     ROS_INFO("\033[33m[Planner] input points size = %d. \033[32m", (int)PR.model->points.size());
     model_tree.setInputCloud(PR.model);

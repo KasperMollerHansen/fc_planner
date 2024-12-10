@@ -114,10 +114,10 @@ struct PathResult
   pcl::PointCloud<pcl::PointXYZ>::Ptr model;
 
 
-  pcl::PointCloud<pcl::PointXYZ>::Ptr blades_model;
-  pcl::PointCloud<pcl::PointXYZ>::Ptr blades_model_ds;
-  map<int, pcl::PointCloud<pcl::PointXYZ>::Ptr> blades;
-  map<Eigen::Vector3d, Eigen::Vector3d, Vector3dCompare0> blades_pt_normal_pairs;
+  pcl::PointCloud<pcl::PointXYZ>::Ptr blades_model; // Store blade point cloud
+  pcl::PointCloud<pcl::PointXYZ>::Ptr blades_model_ds; // Store blade point cloud downsampled
+  map<int, pcl::PointCloud<pcl::PointXYZ>::Ptr> blades; // store blade point cloud segmented in three groups
+  map<Eigen::Vector3d, Eigen::Vector3d, Vector3dCompare0> blades_pt_normal_pairs; // Store blade normal vectors
 
   
   map<int, pcl::PointCloud<pcl::PointXYZ>::Ptr> sub_vps_inflate;
