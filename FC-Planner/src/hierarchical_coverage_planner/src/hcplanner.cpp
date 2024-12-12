@@ -260,6 +260,7 @@ namespace predrecon
                 double thickness = 0.5 * normal_step;
 
                 if (std::abs(dist_from_plane <= thickness)) {
+                    blade_pt_normal = (blade_pt_vec - blade_proj_point).normalized();
                     PR.blades_pt_normal_pairs[blade_pt_vec] = blade_pt_normal;
                 }
             }
